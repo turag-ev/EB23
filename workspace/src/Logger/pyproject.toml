@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "turag_logger"
+version = "0.0.1"
+authors = [
+  { name="Sebastian Zarnack", email="Sebastian.Zarnack@turag.de" },
+]
+description = "A Logger for the eurobot2022"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
