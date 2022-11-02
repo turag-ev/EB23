@@ -45,7 +45,9 @@ Please make sure to follow the following given structure when working on your mo
         └───...
 ```
 After making sure your package is installable, add it to the `requirements_local.txt` file with its relative path from said file to your package's `setup.py`.  
-Furthermore, add all dependencies having to be installed from online (openCV or anything pip install) to the `requirements.txt` file.  
+Furthermore, add all dependencies having to be installed from online (openCV or anything pip install) that are 
+not already handled in your `setup.py` files or your package's `requirements.txt` to the main `requirements.txt` file
+in the root directory.  
 A guide on how to create Python and ROS packages will follow on the TURAG Wiki.
 
 ## Code Styling
