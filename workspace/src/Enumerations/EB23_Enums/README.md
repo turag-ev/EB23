@@ -26,3 +26,17 @@ Lastly, import them in your module
 ```python
 from EB23_Enums import Example
 ```
+
+Use them in your module
+
+```python
+from EB23_Enums import Example
+
+# access member
+Example.Member1
+Example.Member2
+
+# access values
+example_string = Example.Member1.value()
+example_integer = Example.Member2.value()
+```
