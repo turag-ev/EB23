@@ -52,7 +52,7 @@ A guide on how to create Python and ROS packages will follow on the TURAG Wiki.
 
 ## Code Styling
 This repository follows [PEP 8 guidelines](https://peps.python.org/pep-0008/) guidelines on formatting and writing code. Formatting has to be done with the python 
-[black](https://pypi.org/project/black/) linter. A guide on specific coding guidelines will follow on the TURAG Wiki.
+[black](https://pypi.org/project/black/) linter. Specific code guidelines for this project are provided in a [code styling entry](https://intern.turag.de/wiki/doku.php?id=01_eurobot:eurobot_2023:code_styling_guidelines) on our TURAG Wiki.
 
 ## Logger
 Last year one of our members created a logging module allowing us to easily create and store logging messages from within our code.
