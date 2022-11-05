@@ -31,7 +31,7 @@ Please make sure to follow the following given structure when working on your mo
 <details>
   <summary>Click me</summary>
 
-    ```
+    
     .
     │   .gitignore
     │   install_requirements.py
@@ -78,7 +78,7 @@ Please make sure to follow the following given structure when working on your mo
                 |       .gitkeep
                 |
                 └───...                         -> more ros packages
-    ```
+    
 
 </details>
 
