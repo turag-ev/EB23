@@ -11,13 +11,9 @@ Open the console of your choice in the newly created directory and install all n
 with the help of our python script. 
 ```
 py install_requirements.py
-```
 or
-````
 python install_requirements.py
-````
 or
-````
 python3 install_requirements.py
 ````
 
@@ -32,7 +28,7 @@ Please make sure to follow the following given structure when working on your mo
   <summary>Click me</summary>
 
     
-    .
+    EB23                                        -> parent directory of this repository
     │   .gitignore
     │   install_requirements.py
     │   LICENSE
