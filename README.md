@@ -82,7 +82,7 @@ After making sure your package is installable, add it to the `requirements_local
 Furthermore, add all dependencies having to be installed from online sources (openCV or anything pip install) that are 
 not already handled in your `setup.py` files or your package's `requirements.txt` to the main `requirements.txt` file
 in the root directory.  
-A guide on how to create [Python](https://intern.turag.de/wiki/doku.php?id=050_software:anleitungen:creating_python_packages) and ROS packages is on the TURAG Wiki.
+A guide on how to create [Python](https://intern.turag.de/wiki/doku.php?id=050_software:anleitungen:creating_python_packages) and [ROS packages](https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html) is on the TURAG Wiki.
 
 ## Code Styling
 This repository follows [PEP 8 guidelines](https://peps.python.org/pep-0008/) guidelines on formatting and writing code. Formatting has to be done with the python 
