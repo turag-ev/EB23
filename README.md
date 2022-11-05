@@ -8,10 +8,18 @@ Clone this repository
 git clone https://github.com/turag-ev/Eurobot-2023.git
 ```
 Open the console of your choice in the newly created directory and install all necessary dependencies
+with the help of our python script. 
 ```
-pip install -r requirements.txt
-pip install -r requirements_local.txt
+py install_requirements.py
 ```
+or
+````
+python install_requirements.py
+````
+or
+````
+python3 install_requirements.py
+````
 
 Make sure to regularly check whether new packages/ requirements were added and if so repeat installing the requirements.
 
