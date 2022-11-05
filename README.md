@@ -5,7 +5,7 @@
 ## Setup
 Clone this repository
 ```
-git clone https://github.com/turag-ev/Eurobot-2023.git
+git clone https://github.com/turag-ev/EB23.git
 ```
 Open the console of your choice in the newly created directory and install all necessary dependencies
 with the help of our python script. 
