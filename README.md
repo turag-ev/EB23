@@ -28,30 +28,60 @@ Make sure to regularly check whether new packages/ requirements were added and i
 ## Structure
 Please make sure to follow the following given structure when working on your modules
 
-```
-.
-│   .gitignore
-│   LICENSE
-│   README.md
-│   requirements.txt
-│   requirements_local.txt
-│
-└───workspace                           -> global workspace                           
-    └───src
-        │
-        ├───InternalMechanics           -> example: InternalMechanics consisting of three packages
-        │   │   README.md               -> README explaining general content of Module
+<details>
+  <summary>Click me</summary>
+
+    ```
+    .
+    │   .gitignore
+    │   install_requirements.py
+    │   LICENSE
+    │   README.md
+    │   requirements.txt
+    │   requirements_local.txt
+    │
+    └───workspace                               -> global workspace
+        ├───python_packages                     -> workspace for python only packages
+        │   │   README.md
         │   │
-        │   ├───Actors                  -> ROS package 
+        │   ├───Helpers                         -> subdirectory for helper packages
+        │   │   ├───Logger
+        │   │   |   │   LICENSE
+        │   │   |   │   pyproject.toml
+        │   │   |   │   README.md
+        │   │   |   │
+        │   │   |   └───src
+        │   │   |       └───Logger
+        │   │   |               Logger.py
+        │   │   |               __init__.py
+        │   │   |
+        │   │   └...                            -> more helper packages (Enumerations,...)
         │   │
-        │   ├───IMAM                    -> ROS Node
+        │   ├───InternalMechanics               -> subdirectory for IM python packages
+        │   │   │   README.md
+        │   │   │
+        │   │   └───IMA_Interface
+        │   │       │   LICENSE
+        │   │       │   pyproject.toml
+        │   │       │
+        │   │       └───IMA_Interface
+        │   │               interface.py
+        │   │               __init__.py
         │   │
-        │   └───IMA_Interface           -> Python Package following python package structure       
+        │   └───...                             -> more subdirectories (Pathfinding, Gameplanning, ...)
         │
-        ├───More Modules                -> General modules: CentralTracking, Pathfinding, InternalMechanics ...
-        │
-        └───...
-```
+        └───ros_packages                        -> workspace for ros packages
+            │   README.md
+            │
+            └───src
+                ├───IMAM                        -> ros package (InternalMechanicsActionsManager)
+                |       .gitkeep
+                |
+                └───...                         -> more ros packages
+    ```
+
+</details>
+
 After making sure your package is installable, add it to the `requirements_local.txt` file with its relative path from said file to your package's `setup.py`.  
 Furthermore, add all dependencies having to be installed from online sources (openCV or anything pip install) that are 
 not already handled in your `setup.py` files or your package's `requirements.txt` to the main `requirements.txt` file
