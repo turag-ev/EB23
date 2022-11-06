@@ -2,5 +2,5 @@ from enum import Enum, auto, unique
 
 
 @unique
-class Actor(Enum):
+class Actuator(Enum):
     pass
