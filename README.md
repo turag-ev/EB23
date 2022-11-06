@@ -18,6 +18,7 @@ python3 install_requirements.py
 ````
 
 Make sure to regularly check whether new packages/ requirements were added and if so repeat installing the requirements.
+VS Code might not show your import as valid, however it works. If you'd like to have vs code accept the import, add it to path by hovering over the import and execute the suggested quick fix.
 
 **_NOTE:_** In the future this will be handled via docker images. This is a temporary solution.
 
