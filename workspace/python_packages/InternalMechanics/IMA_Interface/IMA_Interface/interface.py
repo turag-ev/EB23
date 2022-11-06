@@ -19,5 +19,13 @@ class IMA_Interface(ABC):
         return self.used_actuators
 
     @abstractmethod
-    def execute(self, imam, **kw_actors):
+    def prepare(self, imam, **kw_actuators):
+        pass
+
+    @abstractmethod
+    def execute(self, imam, **kw_actuators):
+        pass
+
+    @abstractmethod
+    def postProcess(self, imam, **kw_actuators):
         pass
