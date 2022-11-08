@@ -64,8 +64,11 @@ xhost +local:docker
 # -v ~/.gitconfig:/etc/gitconfig
 # sudo chgrp video /dev/dri/renderD128 && \
 docker run -it --rm --privileged \
-    -v $SCRIPT_DIR/workspace/python_packages:/home/$USER/workspace/python_packages \
-    -v $SCRIPT_DIR/workspace/ros_packages:/home/$USER/workspace/ros_packages \
+    -v $SCRIPT_DIR/workspace:/home/$USER/workspace \
+    -v $SCRIPT_DIR/resources:/home/$USER/resources \
+    -v build:/home/$USER/workspace/build/ \
+    -v log:/home/$USER/workspace/log/ \
+    -v install:/home/$USER/workspace/install/ \
     --volume=/tmp/.X11-unix:/tmp/.X11-unix \
     --net=$NETWORK \
     --env DISPLAY=$DISPLAY \
