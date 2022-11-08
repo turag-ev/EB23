@@ -1,3 +1,0 @@
-workspace/python_packages/Helpers/Logger
-workspace/python_packages/Helpers/Enumerations
-workspace/python_packages/InternalMechanics/IMA_Interface
