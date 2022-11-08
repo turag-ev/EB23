@@ -52,7 +52,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd -W)
 
 echo "Using options:"
 echo -e "\tImage name: $IMAGE_NAME"
@@ -60,9 +60,19 @@ echo -e "\tImage tag: $TAG"
 echo -e "\tUser name: $USER"
 echo -e "\tvirtual network (currently not used): $NETWORK"
 echo "Launching image!"
-xhost +local:docker
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  echo "Detected Linux "
+  xhost +local:docker
+  display=$DISPLAY
+elif [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
+  echo "Detected Windows"
+  display=host.docker.internal:0.0
+  display=$DISPLAY
+fi
+
 # -v ~/.gitconfig:/etc/gitconfig
-# sudo chgrp video /dev/dri/renderD128 && \
+#   --gpus all \
 docker run -it --rm --privileged \
     -v $SCRIPT_DIR/workspace:/home/$USER/workspace \
     -v $SCRIPT_DIR/resources:/home/$USER/resources \
@@ -71,5 +81,5 @@ docker run -it --rm --privileged \
     -v install:/home/$USER/workspace/install/ \
     --volume=/tmp/.X11-unix:/tmp/.X11-unix \
     --net=$NETWORK \
-    --env DISPLAY=$DISPLAY \
+    --env DISPLAY=$display \
     $IMAGE_NAME:$TAG
