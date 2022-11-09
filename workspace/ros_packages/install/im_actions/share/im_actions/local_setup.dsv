@@ -1,4 +1,0 @@
-source;share/im_actions/environment/ament_prefix_path.sh
-source;share/im_actions/environment/library_path.sh
-source;share/im_actions/environment/path.sh
-source;share/im_actions/environment/pythonpath.sh
