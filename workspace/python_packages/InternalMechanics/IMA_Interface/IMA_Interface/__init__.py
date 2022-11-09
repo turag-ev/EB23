@@ -1,1 +1,2 @@
-from .interface import IMA_Interface
+from .interfaces import MajorAction
+from .interfaces import MinorAction
