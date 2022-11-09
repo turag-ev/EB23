@@ -52,7 +52,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd -W)
+
 
 echo "Using options:"
 echo -e "\tImage name: $IMAGE_NAME"
@@ -63,10 +63,12 @@ echo "Launching image!"
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   echo "Detected Linux "
+  SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
   xhost +local:docker
   display=$DISPLAY
 elif [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
   echo "Detected Windows"
+  SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd -W)
   display=host.docker.internal:0.0
   display=$DISPLAY
 fi
