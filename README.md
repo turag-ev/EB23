@@ -35,7 +35,7 @@
 2. Open VSCode and start a Terminal (on Windows this has to be a GIT Bash --> can be selected in the dropdown menu near the plus icon at the top right terminal window).
 3. Change to EB23 directory via `cd EB23`
 4. Run `./build_container.sh` --> if done for the first time it takes a while (5min)
-5. After building was successfull run `./start_container_windows.sh` or ./start_container_linux.sh` respectivly
+5. After building was successfull run `./start_container_windows.sh`
 
 **Success!**  
 You are now running your own development environment inside a container
