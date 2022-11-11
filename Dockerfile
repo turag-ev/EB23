@@ -57,7 +57,7 @@ WORKDIR /home/$user/resources/
 RUN python3 install_requirements.py
 WORKDIR /home/$user/workspace/
 RUN rosdep install --from-paths ./ros_packages/src --ignore-src --rosdistro $ROS_DISTRO -y
-RUN colcon build --symlink-install
+RUN . "/opt/ros/foxy/setup.sh" && colcon build --symlink-install
 RUN ls . | grep -v "build\|install\|log" | xargs rm -r
 RUN rm -r ../resources
 
