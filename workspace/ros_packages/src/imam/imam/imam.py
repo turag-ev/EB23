@@ -2,7 +2,7 @@ from im_actions.action import Test
 import rclpy
 from rclpy.action import ActionServer, ActionClient
 from rclpy.node import Node
-from IMA_A import TestAction
+from IMA_A import MajorAction1
 from EB23_Enums import Action
 
 
@@ -17,7 +17,7 @@ class IMAM(Node):
         self._action_client = ActionClient(self, Test, "test_execute")
 
     def testPrepare(self, goal_handle):
-        action = TestAction()
+        action = MajorAction1()
 
         used_actuators = action.getActuators()
 
