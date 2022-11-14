@@ -11,3 +11,9 @@ class Action(Enum):
     TEST_PREPARE = auto()
     TEST_EXECUTE = auto()
     TEST_POSTPROCESS = auto()
+
+
+@unique
+class ActuatorState(Enum):
+    OCCUPIED = auto()
+    FREE = auto()
