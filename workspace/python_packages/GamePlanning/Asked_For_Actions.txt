@@ -1,0 +1,60 @@
+Actions the game planning would need
+(main bot)
+
+- pickup:
+    description: pick up a cake from the ground to middle platform
+
+- store:
+    description: store cake from middle in the revolver
+    argument: which revolver chamber
+
+- pickup_and_store:
+    description: pick up a cake from the ground and store it in the revolver
+    argument: which revolver chamber
+
+
+- revolve:
+    description: which revolver chamber
+    argument: which revolver chamber
+
+
+- retrieve:
+    description: lowers 3 cakes from a revolver into the middle platform
+    argument: which revolver chamber
+
+- drop:
+    description: set cake down from middle platform to the ground
+
+- retrieve_and_drop:
+    description: lowers 3 cakes from a revolver into the middle platform and puts them on the ground
+    argument: which revolver chamber
+
+
+-retrieve_and_drop_all:
+    description: retrieve_and_drop for all chambers
+
+- build_cake:
+    description: builds a cake with the perfect recipe into the middle platform
+
+-
+
+
+(subbot)
+- place_cherry
+    description: puts cherry on selected cake
+    argument: which cake
+
+- throw_cherry
+    description: throws a number of cherries in basket selected cake
+    argument: the number of cherries
+
+
+
+
+
+What the game planning would like:
+
+- The ability to send an cancel an IMA action or movement
+- done via cancel-action action?  
+
+
