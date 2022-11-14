@@ -18,6 +18,9 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["test = imam.imam:main"],
+        "console_scripts": [
+            "test = imam.imam:main",
+            "publisher = imam.publisher:main",
+        ],
     },
 )
