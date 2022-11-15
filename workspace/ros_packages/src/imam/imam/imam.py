@@ -2,6 +2,7 @@ from im_actions.action import Test
 import rclpy
 from rclpy.action import ActionServer, ActionClient
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor, SingleThreadedExecutor
 from IMA_A import MajorAction1
 from EB23_Enums import Action
 from servers import Servers
@@ -23,7 +24,11 @@ class IMAM(Node):
 
 if __name__ == "__main__":
     rclpy.init(args=None)
+    executor = SingleThreadedExecutor()
 
     imam = IMAM()
+    servers = Servers()
 
-    rclpy.spin(imam)
+    executor.add_node(imam)
+    executor.add_node(servers)
+    executor.spin()
