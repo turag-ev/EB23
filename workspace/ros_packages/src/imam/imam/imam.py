@@ -3,17 +3,20 @@ import rclpy
 from rclpy.action import ActionServer, ActionClient
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor, SingleThreadedExecutor
-from IMA_A import MajorAction1
+from .IMA_A import MajorAction1
 from EB23_Enums import Action
-from servers import Servers
+from .servers import Servers
+from .publisher import Publisher
 
 
 class IMAM(Node):
     def __init__(self):
         super().__init__("imam")
-        self._prepare_client = ActionClient(self, Test, "test_prepare")
-        self._execute_client = ActionClient(self, Test, "test_execute")
-        self._post_process_client = ActionClient(self, Test, "test_post_process")
+        # self._prepare_client = ActionClient(self, Test, "test_prepare")
+        # self._execute_client = ActionClient(self, Test, "test_execute")
+        # self._post_process_client = ActionClient(self, Test, "test_post_process")
+        self.servers = Servers(self)
+        self.publisher = Publisher(self)
 
     def callAction(action: Action, **kwargs):
         pass

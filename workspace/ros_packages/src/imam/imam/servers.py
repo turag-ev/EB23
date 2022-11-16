@@ -1,17 +1,24 @@
 import rclpy
 from EB23_Enums import Action
 from im_actions.action import Test
-from IMA_A import MajorAction1
+from .IMA_A import MajorAction1
 from rclpy.action import ActionServer
 from rclpy.node import Node
+from .imam import IMAM
 
 
-class Servers(Node):
-    def __init__(self):
-        super().__init__("servers")
-        self._prepare_server = ActionServer(self, Test, "test_prepare", self.prepareCallback)
-        self._execute_server = ActionServer(self, Test, "test_execute", self.executeCallback)
-        self._post_process_server = ActionServer(self, Test, "test_post_process", self.postProcessCallback)
+class Servers:
+    def __init__(self, imam: IMAM):
+        self._imam = imam
+        self._prepare_server = ActionServer(
+            self._imam, Test, "test_prepare", self.prepareCallback
+        )
+        self._execute_server = ActionServer(
+            self._imam, Test, "test_execute", self.executeCallback
+        )
+        self._post_process_server = ActionServer(
+            self._imam, Test, "test_post_process", self.postProcessCallback
+        )
 
     def prepareCallback(self, goal_handle):
         action = MajorAction1()
@@ -22,7 +29,7 @@ class Servers(Node):
         # Maybe we can send client data as request params
         # action.prepare(self._action_client)
 
-        self.get_logger().info('Preparing...')
+        self._imam.get_logger().info("Preparing...")
 
         goal_handle.succeed()
 
@@ -39,7 +46,7 @@ class Servers(Node):
 
         # action.execute()
 
-        self.get_logger().info('Executing...')
+        self._imam.get_logger().info("Executing...")
 
         goal_handle.succeed()
 
@@ -56,7 +63,7 @@ class Servers(Node):
 
         # action.postProcess()
 
-        self.get_logger().info('Post-processing...')
+        self._imam.get_logger().info("Post-processing...")
 
         goal_handle.succeed()
 
