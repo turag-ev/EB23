@@ -1,12 +1,8 @@
-from im_actions.action import Test
 import rclpy
-from rclpy.action import ActionServer, ActionClient
 from rclpy.node import Node
-from rclpy.executors import MultiThreadedExecutor, SingleThreadedExecutor
-from .IMA_A import MajorAction1
-from EB23_Enums import Action
+
 from .servers import Servers
-from .publisher import Publisher
+from .publisher import PublisherIM
 
 
 class IMAM(Node):
@@ -16,22 +12,14 @@ class IMAM(Node):
         # self._execute_client = ActionClient(self, Test, "test_execute")
         # self._post_process_client = ActionClient(self, Test, "test_post_process")
         self.servers = Servers(self)
-        self.publisher = Publisher(self)
-
-    def callAction(action: Action, **kwargs):
-        pass
-
-    def callActionAsync(action: Action, **kwargs):
-        pass
+        self.publisher = PublisherIM(self)
 
 
-if __name__ == "__main__":
+def main():
     rclpy.init(args=None)
-    executor = SingleThreadedExecutor()
-
     imam = IMAM()
-    servers = Servers()
+    rclpy.spin(imam)
 
-    executor.add_node(imam)
-    executor.add_node(servers)
-    executor.spin()
+
+if __name__ == "__name__":
+    main()

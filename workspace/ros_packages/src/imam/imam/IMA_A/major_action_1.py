@@ -10,23 +10,25 @@ class MajorAction1(MajorAction):
         super().__init__()
 
     def prepare(self, imam: object, **kw_actuators):
-        print("Starting preparation!")
+        imam.get_logger().info("Starting preparation!")
         for _ in range(5):
-            print("[INFO] Preparing...")
+            imam.get_logger().info("[INFO] Preparing...")
             sleep(1)
-        print("Finished preparation")
+        imam.get_logger().info("Finished preparation")
+
+        imam.publisher.publishAction("TEST")
 
     def execute(self, imam: object, **kw_actuators):
-        print("Starting execution :)")
+        imam.get_logger().info("Starting execution :)")
         for _ in range(5):
-            print("[INFO] Executing...")
+            imam.get_logger().info("[INFO] Executing...")
             sleep(1)
-        print("Finished execution!")
+        imam.get_logger().info("Finished execution!")
 
     def postProcess(self, imam: object, **kw_actuators):
-        print("Starting post processessing!")
+        imam.get_logger().info("Starting post processessing!")
         for _ in range(5):
-            print("[INFO] Post Processing....")
+            imam.get_logger().info("[INFO] Post Processing....")
             sleep(1)
 
-        print("Finished post processing!")
+        imam.get_logger().info("Finished post processing!")

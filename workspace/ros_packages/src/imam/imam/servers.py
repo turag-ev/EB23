@@ -4,20 +4,19 @@ from im_actions.action import Test
 from .IMA_A import MajorAction1
 from rclpy.action import ActionServer
 from rclpy.node import Node
-from .imam import IMAM
 
 
 class Servers:
-    def __init__(self, imam: IMAM):
-        self._imam = imam
+    def __init__(self, imam):
+        self.imam = imam
         self._prepare_server = ActionServer(
-            self._imam, Test, "test_prepare", self.prepareCallback
+            self.imam, Test, "test_prepare", self.prepareCallback
         )
         self._execute_server = ActionServer(
-            self._imam, Test, "test_execute", self.executeCallback
+            self.imam, Test, "test_execute", self.executeCallback
         )
         self._post_process_server = ActionServer(
-            self._imam, Test, "test_post_process", self.postProcessCallback
+            self.imam, Test, "test_post_process", self.postProcessCallback
         )
 
     def prepareCallback(self, goal_handle):
@@ -27,9 +26,9 @@ class Servers:
 
         # Do we need the ActionClient itself? Or do we just need some information from it?
         # Maybe we can send client data as request params
-        # action.prepare(self._action_client)
+        action.prepare(self.imam)
 
-        self._imam.get_logger().info("Preparing...")
+        self.imam.get_logger().info("Preparing...")
 
         goal_handle.succeed()
 
@@ -44,9 +43,9 @@ class Servers:
 
         used_actuators = action.getActuators()
 
-        # action.execute()
+        action.execute(self.imam)
 
-        self._imam.get_logger().info("Executing...")
+        self.imam.get_logger().info("Executing...")
 
         goal_handle.succeed()
 
@@ -61,9 +60,9 @@ class Servers:
 
         used_actuators = action.getActuators()
 
-        # action.postProcess()
+        action.postProcess(self.imam)
 
-        self._imam.get_logger().info("Post-processing...")
+        self.imam.get_logger().info("Post-processing...")
 
         goal_handle.succeed()
 
@@ -72,11 +71,3 @@ class Servers:
         result.sequence = [1, 2, 3, 4, 5]
 
         return result
-
-
-if __name__ == "__main__":
-    rclpy.init(args=None)
-
-    servers = Servers()
-
-    rclpy.spin(servers)
