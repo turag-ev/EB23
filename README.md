@@ -17,7 +17,7 @@
 2. Follow [post installation steps](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) to use docker without root  
 3. Log in and out again
 4. Test with `docker run hello-world`
-5. Install Git `sudo apt install git-all`
+5. Install Git `sudo apt install git`
 
 ### Ubuntu (WSL2)
 0. If you do not use Win11 follow all steps under the Windows section
