@@ -32,13 +32,13 @@ USER $user
 RUN sudo python3 -m pip install --upgrade pip && \  
     rosdep update && \
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-RUN echo "PATH=$HOME/dev/.local/bin:$PATH" >> ~/.zshrc && \
+RUN echo "PATH=$HOME/.local/bin:$PATH" >> ~/.zshrc && \
     echo "source /opt/ros/foxy/setup.zsh" >> ~/.zshrc && \
     echo "source /home/$user/workspace/install/setup.zsh" >> ~/.zshrc && \
     echo "cd /home/$user/workspace" >> ~/.zshrc && \
     echo 'eval "$(register-python-argcomplete3 ros2)"' >> ~/.zshrc && \
     echo 'eval "$(register-python-argcomplete3 colcon)"' >> ~/.zshrc && \
-    echo "PATH=$HOME/dev/.local/bin:$PATH" >> ~/.bashrc && \
+    echo "PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc && \
     echo "source /opt/ros/foxy/setup.bash" >> ~/.bashrc && \
     echo "source /home/$user/workspace/install/setup.bash" >> ~/.bashrc && \
     echo "cd /home/$user/workspace" >> ~/.bashrc
@@ -50,7 +50,7 @@ RUN sudo chown -R $user:$user /home/$user/ && \
     sudo chsh -s ~/.zshrc 
 RUN python3 ./resources/install_requirements.py && \
     rosdep install --from-paths ./workspace/ros_packages/src --ignore-src --rosdistro $ROS_DISTRO -y
-RUN . "/opt/ros/foxy/setup.sh" && colcon build --symlink-install
+RUN cd ./workspace && . "/opt/ros/foxy/setup.sh" && colcon build --symlink-install
 RUN rm -r ./resources && \
     cd ./workspace/ && ls . | grep -v "build\|install\|log" | xargs rm -r 
 ENTRYPOINT [ "zsh" ] 

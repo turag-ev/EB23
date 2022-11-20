@@ -13,14 +13,17 @@ in a command shell from within the EB23 Directory.
 """
 
 import subprocess
+import os
+
+script_folder = os.path.dirname(os.path.realpath(__file__))
 
 
 def installLocalRequirements():
-    with open("requirements_local.txt") as f:
+    with open(script_folder + "/requirements_local.txt") as f:
         packages = f.readlines()
 
     for package_path in packages:
-        command = f"pip install -e {package_path}"
+        command = f"pip3 install -e {package_path}"
         print(f"[INFO] {command}")
         process = subprocess.Popen(command, shell=True)
         process.wait()
@@ -29,7 +32,7 @@ def installLocalRequirements():
 
 
 def installOnlineRequirements():
-    command = f"pip install -r requirements.txt"
+    command = f"pip3 install -r {script_folder}/requirements.txt"
     print(command)
     process = subprocess.Popen(command, shell=True)
     process.wait()
