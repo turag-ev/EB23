@@ -1,5 +1,4 @@
-FROM osrf/ros:foxy-desktop
-
+FROM ros:foxy-ros-base
 ARG gid
 ARG uid
 ARG user=dev
@@ -9,56 +8,49 @@ ENV DEBCONF_NOWARNINGS="yes"
 
 RUN apt-get update && apt-get install -y \
     sudo \
-    libgl1-mesa-glx \
-    libgl1-mesa-dri \
     iputils-ping \
     net-tools \
     clang-format \
-    clang \
     gdb \
+    curl \
     nano \
-    git-all \
-    python3-pip \
+    git \
+    zsh \
     wget \
-    intel-gpu-tools \
     ros-foxy-ament-cmake-clang-format \
-    python3-vcstool 
+    python3-pip \
+    python3-vcstool \
+    libqt5svg5 \
+    python3-tk 
 
 RUN groupadd -g $gid -o $user && \
-    useradd -m -u $uid -g $gid -o -s /bin/bash $user
-RUN echo "$user:x:"$uid":$gid:$user,,,:/home/$user:/bin/bash" >> /etc/passwd && \
+    useradd -m -u $uid -g $gid -o -s /bin/bash $user && \
+    echo "$user:x:"$uid":$gid:$user,,,:/home/$user:/bin/bash" >> /etc/passwd && \
     echo "$user ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$user && \
     chmod 0440 /etc/sudoers.d/$user
 USER $user
-RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.3/zsh-in-docker.sh)" -- \
-    -p git -p sudo -p git-prompt -p 'history-substring-search'
-RUN rosdep update
+RUN sudo python3 -m pip install --upgrade pip && \  
+    rosdep update && \
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN echo "PATH=$HOME/dev/.local/bin:$PATH" >> ~/.zshrc && \
     echo "source /opt/ros/foxy/setup.zsh" >> ~/.zshrc && \
     echo "source /home/$user/workspace/install/setup.zsh" >> ~/.zshrc && \
     echo "cd /home/$user/workspace" >> ~/.zshrc && \
     echo 'eval "$(register-python-argcomplete3 ros2)"' >> ~/.zshrc && \
-    echo 'eval "$(register-python-argcomplete3 colcon)"' >> ~/.zshrc
-
-RUN echo "PATH=$HOME/dev/.local/bin:$PATH" >> ~/.bashrc && \
+    echo 'eval "$(register-python-argcomplete3 colcon)"' >> ~/.zshrc && \
+    echo "PATH=$HOME/dev/.local/bin:$PATH" >> ~/.bashrc && \
     echo "source /opt/ros/foxy/setup.bash" >> ~/.bashrc && \
     echo "source /home/$user/workspace/install/setup.bash" >> ~/.bashrc && \
     echo "cd /home/$user/workspace" >> ~/.bashrc
 
-RUN sudo python3 -m pip install --upgrade pip
-RUN mkdir -p /home/$user/workspace/
 WORKDIR /home/$user/
-COPY ./workspace ./workspace
-COPY ./resources ./resources
-RUN sudo chown -R $user:$user /home/$user/
-RUN sudo usermod -a -G video $user && \
+COPY ./workspace ./workspace/
+COPY ./resources ./resources/
+RUN sudo chown -R $user:$user /home/$user/ && \
     sudo chsh -s ~/.zshrc 
-WORKDIR /home/$user/resources/
-RUN python3 install_requirements.py
-WORKDIR /home/$user/workspace/
-RUN rosdep install --from-paths ./ros_packages/src --ignore-src --rosdistro $ROS_DISTRO -y
+RUN python3 ./resources/install_requirements.py && \
+    rosdep install --from-paths ./workspace/ros_packages/src --ignore-src --rosdistro $ROS_DISTRO -y
 RUN . "/opt/ros/foxy/setup.sh" && colcon build --symlink-install
-RUN ls . | grep -v "build\|install\|log" | xargs rm -r
-RUN rm -r ../resources
-
-ENTRYPOINT /bin/zsh
+RUN rm -r ./resources && \
+    cd ./workspace/ && ls . | grep -v "build\|install\|log" | xargs rm -r 
+ENTRYPOINT [ "zsh" ] 

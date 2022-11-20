@@ -75,7 +75,7 @@ fi
 
 # -v ~/.gitconfig:/etc/gitconfig
 #   --gpus all \
-docker run -it --privileged \
+docker run -it --privileged --name EB23 \
     -v $SCRIPT_DIR/workspace:/home/$USER/workspace \
     -v $SCRIPT_DIR/resources:/home/$USER/resources \
     -v build:/home/$USER/workspace/build/ \
