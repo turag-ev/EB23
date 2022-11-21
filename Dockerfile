@@ -17,11 +17,12 @@ RUN apt-get update && apt-get install -y \
     git \
     zsh \
     wget \
-    ros-foxy-ament-cmake-clang-format \
     python3-pip \
     python3-vcstool \
     libqt5svg5 \
-    python3-tk 
+    python3-tk \
+    ros-foxy-ament-cmake-clang-format \
+    ros-foxy-rosbridge-suite
 
 RUN groupadd -g $gid -o $user && \
     useradd -m -u $uid -g $gid -o -s /bin/bash $user && \
