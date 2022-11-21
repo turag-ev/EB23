@@ -21,7 +21,6 @@ elif [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
   echo "Detected Windows"
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd -W)
   display=host.docker.internal:0.0
-  display=$DISPLAY
 fi
 echo "Launching image!"
 
