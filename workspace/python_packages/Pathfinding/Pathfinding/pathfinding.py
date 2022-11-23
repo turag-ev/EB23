@@ -15,11 +15,12 @@ from abc import ABC, abstractmethod
 import os
 import sys
 
+# TODO: why do we need the following 3 lines?
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from Enumerations import OrderType
+from EB23_Enums import OrderType
 
 
 class PathFinder(ABC):
