@@ -16,6 +16,9 @@ class MajorAction1(MajorAction):
             sleep(1)
         imam.get_logger().info("Finished preparation")
 
+        future = imam.clis.send_execute_goal(5)
+        imam.spin_until_future_complete(future)
+        imam.get_logger().info(future.result())
         imam.publisher.publishAction("TEST")
 
     def execute(self, imam: object, **kw_actuators):
