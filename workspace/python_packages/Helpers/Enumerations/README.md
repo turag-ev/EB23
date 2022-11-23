@@ -37,6 +37,6 @@ Example.Member1
 Example.Member2
 
 # access values
-example_string = Example.Member1.value()
-example_integer = Example.Member2.value()
+example_string = Example.Member1.value
+example_integer = Example.Member2.value
 ```
