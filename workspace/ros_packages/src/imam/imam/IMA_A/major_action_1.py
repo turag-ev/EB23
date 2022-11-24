@@ -1,5 +1,4 @@
 from time import sleep
-
 from IMA_Interface import MajorAction
 
 
@@ -9,29 +8,25 @@ class MajorAction1(MajorAction):
     def __init__(self) -> None:
         super().__init__()
 
-    def prepare(self, imam: object, **kw_actuators):
-        imam.get_logger().info("Starting preparation!")
+    async def prepare(self, imam: object, **kw_actuators):
         for _ in range(5):
             imam.get_logger().info("[INFO] Preparing...")
             sleep(1)
-        imam.get_logger().info("Finished preparation")
 
-        future = imam.clis.send_execute_goal(5)
-        imam.spin_until_future_complete(future)
-        imam.get_logger().info(future.result())
+        future = imam.clis.send_minor1_execute(5)
+
+        future2 = imam.clis.send_minor2_execute(5)
+
+        await future2, future
+
         imam.publisher.publishAction("TEST")
 
-    def execute(self, imam: object, **kw_actuators):
-        imam.get_logger().info("Starting execution :)")
+    async def execute(self, imam: object, **kw_actuators):
         for _ in range(5):
             imam.get_logger().info("[INFO] Executing...")
             sleep(1)
-        imam.get_logger().info("Finished execution!")
 
-    def postProcess(self, imam: object, **kw_actuators):
-        imam.get_logger().info("Starting post processessing!")
+    async def postProcess(self, imam: object, **kw_actuators):
         for _ in range(5):
             imam.get_logger().info("[INFO] Post Processing....")
             sleep(1)
-
-        imam.get_logger().info("Finished post processing!")
