@@ -1,4 +1,5 @@
 import rclpy
+import asyncio
 from im_actions.action import Test
 from .IMA_A import MajorAction1, MinorAction1, MinorAction2, MinorAction3
 from rclpy.action import ActionServer
@@ -86,7 +87,8 @@ class Servers:
 
         used_actuators = action.getActuators()
 
-        sleep(3)
+        await asyncio.sleep(3)
+        # sleep(3)
 
         # await action.execute(self.imam)
 
@@ -110,7 +112,8 @@ class Servers:
 
         used_actuators = action.getActuators()
 
-        sleep(3)
+        await asyncio.sleep(3)
+        # sleep(3)
 
         # await action.postProcess(self.imam)
 

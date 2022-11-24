@@ -9,8 +9,9 @@ from .publisher import PublisherIM
 
 
 class IMAM(Node):
-    def __init__(self):
+    def __init__(self, loop: AbstractEventLoop):
         super().__init__("imam")
+        self.loop = loop
         self.servers = Servers(self)
         self.clis = Clients(self)
         self.publisher = PublisherIM(self)
@@ -28,7 +29,7 @@ async def run(
 ):
     rclpy.init()
 
-    imam = IMAM()
+    imam = IMAM(loop)
 
     spin_task = loop.create_task(spinning(imam))
 
