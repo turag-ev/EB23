@@ -2,28 +2,53 @@ import rclpy
 from im_actions.action import Test
 from .IMA_A import MajorAction1, MinorAction1, MinorAction2, MinorAction3
 from rclpy.action import ActionServer
+from rclpy.callback_groups import ReentrantCallbackGroup
 
 
 class Servers:
     def __init__(self, imam):
         self.imam = imam
         self._prepare_server = ActionServer(
-            self.imam, Test, "test_prepare", self.prepareCallback
+            self.imam,
+            Test,
+            "test_prepare",
+            execute_callback=self.prepareCallback,
+            callback_group=ReentrantCallbackGroup,
         )
         self._execute_server = ActionServer(
-            self.imam, Test, "test_execute", self.executeCallback
+            self.imam,
+            Test,
+            "test_execute",
+            execute_callback=self.executeCallback,
+            callback_group=ReentrantCallbackGroup,
         )
         self._post_process_server = ActionServer(
-            self.imam, Test, "test_post_process", self.postProcessCallback
+            self.imam,
+            Test,
+            "test_post_process",
+            execute_callback=self.postProcessCallback,
+            callback_group=ReentrantCallbackGroup,
         )
         self._minor1_server = ActionServer(
-            self.imam, Test, "minor1_execute", self.minor1Callback
+            self.imam,
+            Test,
+            "minor1_execute",
+            execute_callback=self.minor1Callback,
+            callback_group=ReentrantCallbackGroup,
         )
         self._minor2_server = ActionServer(
-            self.imam, Test, "minor2_execute", self.minor2Callback
+            self.imam,
+            Test,
+            "minor2_execute",
+            execute_callback=self.minor2Callback,
+            callback_group=ReentrantCallbackGroup,
         )
         self._minor3_server = ActionServer(
-            self.imam, Test, "minor3_execute", self.minor3Callback
+            self.imam,
+            Test,
+            "minor3_execute",
+            execute_callback=self.minor3Callback,
+            callback_group=ReentrantCallbackGroup,
         )
 
     async def prepareCallback(self, goal_handle):
@@ -95,7 +120,7 @@ class Servers:
 
         return result
 
-    def minor1Callback(self, goal_handle):
+    async def minor1Callback(self, goal_handle):
         self.imam.get_logger().info(
             "\n-------------------- \n Start minor1 Action \n--------------------"
         )
@@ -112,7 +137,7 @@ class Servers:
 
         return result
 
-    def minor2Callback(self, goal_handle):
+    async def minor2Callback(self, goal_handle):
         self.imam.get_logger().info(
             "\n-------------------- \n Start minor2 Action \n--------------------"
         )
@@ -128,7 +153,7 @@ class Servers:
 
         return result
 
-    def minor3Callback(self, goal_handle):
+    async def minor3Callback(self, goal_handle):
         self.imam.get_logger().info(
             "\n------------------- \n Start minor3 Action \n--------------------"
         )

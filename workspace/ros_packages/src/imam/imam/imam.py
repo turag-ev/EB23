@@ -1,5 +1,7 @@
 import rclpy
 from rclpy.node import Node
+import asyncio
+from asyncio import AbstractEventLoop
 
 from .servers import Servers
 from .clients import Clients
@@ -14,11 +16,33 @@ class IMAM(Node):
         self.publisher = PublisherIM(self)
 
 
-def main():
-    rclpy.init(args=None)
+async def spinning(node: Node):
+    while rclpy.ok():
+        rclpy.spin_once(node, timeout_sec=0.01)
+        await asyncio.sleep(0.001)
+
+
+async def run(
+    loop: AbstractEventLoop,
+    args=None,
+):
+    rclpy.init(args)
+
     imam = IMAM()
-    rclpy.spin(imam)
+
+    spin_task = loop.create_task(spinning(imam))
+
+    minor1 = loop.create_task(imam.clis.send_execute_goal(5))
+    minor2 = loop.create_task(imam.clis.send_post_process_goal(5))
+
+    wait_future = asyncio.wait([minor1, minor2])
+
+    finished, unfinished = await wait_future
+
+    for task in finished:
+        imam.get_logger().info("result {} and status flag {}".format(*task.result()))
 
 
-if __name__ == "__name__":
-    main()
+def main():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run(loop=loop))
