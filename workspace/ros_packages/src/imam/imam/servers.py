@@ -3,6 +3,7 @@ from im_actions.action import Test
 from .IMA_A import MajorAction1, MinorAction1, MinorAction2, MinorAction3
 from rclpy.action import ActionServer
 from rclpy.callback_groups import ReentrantCallbackGroup
+from time import sleep
 
 
 class Servers:
@@ -13,42 +14,42 @@ class Servers:
             Test,
             "test_prepare",
             execute_callback=self.prepareCallback,
-            callback_group=ReentrantCallbackGroup,
+            callback_group=ReentrantCallbackGroup(),
         )
         self._execute_server = ActionServer(
             self.imam,
             Test,
             "test_execute",
             execute_callback=self.executeCallback,
-            callback_group=ReentrantCallbackGroup,
+            callback_group=ReentrantCallbackGroup(),
         )
         self._post_process_server = ActionServer(
             self.imam,
             Test,
             "test_post_process",
             execute_callback=self.postProcessCallback,
-            callback_group=ReentrantCallbackGroup,
+            callback_group=ReentrantCallbackGroup(),
         )
         self._minor1_server = ActionServer(
             self.imam,
             Test,
             "minor1_execute",
             execute_callback=self.minor1Callback,
-            callback_group=ReentrantCallbackGroup,
+            callback_group=ReentrantCallbackGroup(),
         )
         self._minor2_server = ActionServer(
             self.imam,
             Test,
             "minor2_execute",
             execute_callback=self.minor2Callback,
-            callback_group=ReentrantCallbackGroup,
+            callback_group=ReentrantCallbackGroup(),
         )
         self._minor3_server = ActionServer(
             self.imam,
             Test,
             "minor3_execute",
             execute_callback=self.minor3Callback,
-            callback_group=ReentrantCallbackGroup,
+            callback_group=ReentrantCallbackGroup(),
         )
 
     async def prepareCallback(self, goal_handle):
@@ -56,6 +57,7 @@ class Servers:
         self.imam.get_logger().info(
             "\n-------------------- \n Start Prepare Action \n--------------------"
         )
+
         action = MajorAction1()
 
         used_actuators = action.getActuators()
@@ -84,7 +86,9 @@ class Servers:
 
         used_actuators = action.getActuators()
 
-        await action.execute(self.imam)
+        sleep(3)
+
+        # await action.execute(self.imam)
 
         self.imam.get_logger().info(
             "\n-------------------- \n End Execute Action \n--------------------"
@@ -106,7 +110,9 @@ class Servers:
 
         used_actuators = action.getActuators()
 
-        await action.postProcess(self.imam)
+        sleep(3)
+
+        # await action.postProcess(self.imam)
 
         self.imam.get_logger().info(
             "\n-------------------- \n End Post Process Action \n--------------------"
@@ -126,7 +132,10 @@ class Servers:
         )
 
         action = MinorAction1()
-        action.execute(self.imam)
+
+        sleep(3)
+
+        # action.execute(self.imam)
         self.imam.get_logger().info(
             "\n-------------------- \n End minor1 Action \n--------------------"
         )
@@ -142,7 +151,10 @@ class Servers:
             "\n-------------------- \n Start minor2 Action \n--------------------"
         )
         action = MinorAction2()
-        action.execute(self.imam)
+
+        sleep(3)
+
+        # action.execute(self.imam)
         self.imam.get_logger().info(
             "\n-------------------- \n End minor2 Action \n--------------------"
         )

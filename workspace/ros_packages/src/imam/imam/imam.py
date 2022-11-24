@@ -26,14 +26,14 @@ async def run(
     loop: AbstractEventLoop,
     args=None,
 ):
-    rclpy.init(args)
+    rclpy.init()
 
     imam = IMAM()
 
     spin_task = loop.create_task(spinning(imam))
 
-    minor1 = loop.create_task(imam.clis.send_execute_goal(5))
-    minor2 = loop.create_task(imam.clis.send_post_process_goal(5))
+    minor1 = loop.create_task(imam.clis.send_minor1_execute(5))
+    minor2 = loop.create_task(imam.clis.send_minor2_execute(5))
 
     wait_future = asyncio.wait([minor1, minor2])
 

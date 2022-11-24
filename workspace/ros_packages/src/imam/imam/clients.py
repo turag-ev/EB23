@@ -23,7 +23,7 @@ class Clients:
         result = res.result
         status = res.status
 
-        return result
+        return result, status
 
     async def send_minor2_execute(self, order):
         goal_msg = Test.Goal()
@@ -37,7 +37,7 @@ class Clients:
         result = res.result
         status = res.status
 
-        return result
+        return result, status
 
     async def send_minor3_execute(self, order):
         goal_msg = Test.Goal()
@@ -51,4 +51,4 @@ class Clients:
         result = res.result
         status = res.status
 
-        return result
+        return result, status
