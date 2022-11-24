@@ -49,14 +49,14 @@ def modSign(x):
 # --------------------------------------------------
 
 
-class _Node:
+class Node:
     def __init__(
         self,
         _obstacleNode: bool,
         _walkable: bool,
         _worldPos: "tuple[int, int]",
-        _gridX: int,
-        _gridY: int,
+        Grid_x: int,
+        Grid_y: int,
     ) -> None:
         # determites if the node belongs to a static obstacle
         self.obstacleNode = _obstacleNode
@@ -68,8 +68,8 @@ class _Node:
         self.worldPosition = _worldPos
 
         # position in the grid matrix
-        self.gridX = _gridX
-        self.gridY = _gridY
+        self.grid_x = Grid_x
+        self.grid_y = Grid_y
 
         # distance between the current node and the start node
         self.gCost = 0
@@ -126,7 +126,7 @@ class _Node:
         """
         info: return position of node in the grid
         """
-        return self.gridX, self.gridY
+        return self.grid_x, self.grid_y
 
     def isObstacleNode(self) -> bool:
         """
@@ -135,9 +135,9 @@ class _Node:
         return self.obstacleNode
 
 
-class _Grid:
-    def __init__(self, _nodeDiameter, _path):
-        self.nodeDiameter = _nodeDiameter
+class Grid:
+    def __init__(self, NodeDiameter, _path):
+        self.nodeDiameter = NodeDiameter
         self.worldSize = [0, 0]
         self.grid = self.getGrid(_path)
         self.enemyNodes = set()
@@ -160,28 +160,28 @@ class _Grid:
 
                 if int(data_line[i][1]) == 1:
                     line.append(
-                        _Node(
+                        Node(
                             _obstacleNode=True,
                             _walkable=False,
                             _worldPos=(
                                 float(data_line[i][0].replace(",", ".")),
                                 float(data_line[i][2].replace(",", ".")),
                             ),
-                            _gridX=n,
-                            _gridY=i,
+                            Grid_x=n,
+                            Grid_y=i,
                         )
                     )
                 else:
                     line.append(
-                        _Node(
+                        Node(
                             _obstacleNode=False,
                             _walkable=True,
                             _worldPos=(
                                 float(data_line[i][0].replace(",", ".")),
                                 float(data_line[i][2].replace(",", ".")),
                             ),
-                            _gridX=n,
-                            _gridY=i,
+                            Grid_x=n,
+                            Grid_y=i,
                         )
                     )
             grid.append(line)
@@ -283,7 +283,7 @@ class AstarPathfinder(PathFinder):
             path to location at which the file of the grid is stored
         :type pathToGridFile: str
         """
-        self.grid = _Grid(nodeDiameter, pathToGridFile)
+        self.grid = Grid(nodeDiameter, pathToGridFile)
 
         # radius (in milimeter since the coordinate system is in milimeter) used to model the enemy robot as a circle
 
@@ -374,6 +374,63 @@ class AstarPathfinder(PathFinder):
         path.reverse()
         return path
 
+    # To-Dos:
+    # Predicting the position of the enemy and knowing the position of our bot ???
+    # remove useless nodes ???
+    # splines between 2 points ???
+    # get the best splines ???
+    # offset start and end (what do i return to LMC? real coordiantes? -> if yes not spline between first node and last node, but start position and end position) ???
+    # strange splines if angle between points is big ???
+
+    def getSplinesFromPoints(self):
+        # get from driving-unit
+        pass
+
+    def getAngleBetweenToNodes(self, node1: Node, node2: Node):
+        """Function for calculating the angle of the connecting line between two nodes.
+
+        Args:
+            node1 (Node): node from where the connecting line starts
+            node2 (Node): node where the connecting line ends
+        """
+        # calculate the x- and y-difference between those two nodes:
+        deltaGrid_x = node2.grid_x - node1.grid_x
+        deltaGrid_y = node2.grid_y - node1.grid_y
+        # atan() returns radians -> by converting to de: if left: 180, if up: 90, if right: 0, if down: -90:
+        angle = math.atan2(deltaGrid_y, deltaGrid_x) / (2 * math.pi) * 180
+        return angle
+
+    def removeUselessNodes(self, list_of_nodes: list[Node]):
+        """Function for removing the useless nodes (the nodes, where the direction doesn't change) from the list of nodes.
+            The direction doesn't change if the angle of the connecting line between the last and the current and the current
+            and the next doesn't change.
+
+        Args:
+            list_ofNodes (list[node]): original list of nodes, which is returned by the D*-algorithms
+        """
+
+        for i in range(1, list_of_nodes):
+            # if angle between the last and the current == angle between the current and the next:
+            if self.getAngleBetweenToNodes(
+                list_of_nodes[i - 1], list_of_nodes[i]
+            ) == self.getAngleBetweenToNodes(list_of_nodes[i], list_of_nodes[i + 1]):
+                list_of_nodes.remove(list_of_nodes[i])  # remove current node
+
+    def splineColidesWithObstacle(self, spline: list(int), grid: Grid):
+        pass
+
+    def getBestSupportingPoints(self, list_of_nodes, grid):
+        """Function for getting the best spline path from our start point to our end point depending on the list of nodes.
+            First, we look if we can just connect start and end point with a spline. If that's not possible, we check if we can
+            connect the start node with the penultimate node (node before the last one) with a spline and so on... ???
+
+
+        Args:
+            list_of_nodes (list[node]): list of the important (usefull) nodes
+            grid (_type_): _description_ ???
+        """
+        pass
+
     def getMovementOrders(
         self,
         startOrientation: int,
@@ -428,7 +485,7 @@ class AstarPathfinder(PathFinder):
                 skip = True
             else:
                 # add target node
-                nodeList.append(_Node(False, True, target, 0, 0))
+                nodeList.append(Node(False, True, target, 0, 0))
 
                 skip = False
         else:
@@ -583,7 +640,7 @@ if __name__ == "__main__":
 
     pf = AstarPathfinder(50, f"{root_folder}/SpielfeldGridSmallObstacle.txt")
 
-    # grid = _Grid(50, "./Main/Pathfinding/SpielfeldGrid.txt")
+    # grid = Grid(50, "./Main/Pathfinding/SpielfeldGrid.txt")
     # grid.blockEnemyLocation(100, 100)
     # grid.freeEnemyLocation()
 
