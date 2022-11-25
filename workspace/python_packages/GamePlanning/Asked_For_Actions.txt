@@ -1,6 +1,11 @@
 Actions the game planning would need
 (main bot)
 
+
+- move:
+    description: moves the bot along the calucaled path
+    argument: path
+
 - pickup:
     description: pick up a cake from the ground to middle platform
 
@@ -11,6 +16,7 @@ Actions the game planning would need
 - pickup_and_store:
     description: pick up a cake from the ground and store it in the revolver
     argument: which revolver chamber
+    
 
 
 - revolve:
@@ -40,9 +46,6 @@ Actions the game planning would need
 
 
 (subbot)
-- place_cherry
-    description: puts cherry on selected cake
-    argument: which cake
 
 - throw_cherry
     description: throws a number of cherries in basket selected cake
