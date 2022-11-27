@@ -1,6 +1,6 @@
 import rclpy
 import asyncio
-from im_actions.action import Test
+from im_actions.action import Trigger
 from .IMA_A import MajorAction1, MinorAction1, MinorAction2, MinorAction3
 from rclpy.action import ActionServer
 from rclpy.callback_groups import ReentrantCallbackGroup
@@ -12,42 +12,42 @@ class Servers:
         self.imam = imam
         self._prepare_server = ActionServer(
             self.imam,
-            Test,
+            Trigger,
             "test_prepare",
             execute_callback=self.prepareCallback,
             callback_group=ReentrantCallbackGroup(),
         )
         self._execute_server = ActionServer(
             self.imam,
-            Test,
+            Trigger,
             "test_execute",
             execute_callback=self.executeCallback,
             callback_group=ReentrantCallbackGroup(),
         )
         self._post_process_server = ActionServer(
             self.imam,
-            Test,
+            Trigger,
             "test_post_process",
             execute_callback=self.postProcessCallback,
             callback_group=ReentrantCallbackGroup(),
         )
         self._minor1_server = ActionServer(
             self.imam,
-            Test,
+            Trigger,
             "minor1_execute",
             execute_callback=self.minor1Callback,
             callback_group=ReentrantCallbackGroup(),
         )
         self._minor2_server = ActionServer(
             self.imam,
-            Test,
+            Trigger,
             "minor2_execute",
             execute_callback=self.minor2Callback,
             callback_group=ReentrantCallbackGroup(),
         )
         self._minor3_server = ActionServer(
             self.imam,
-            Test,
+            Trigger,
             "minor3_execute",
             execute_callback=self.minor3Callback,
             callback_group=ReentrantCallbackGroup(),
@@ -73,7 +73,7 @@ class Servers:
 
         goal_handle.succeed()
 
-        result = Test.Result()
+        result = Trigger.Result()
 
         result.sequence = [1, 2, 3, 5, 8]
 
@@ -98,7 +98,7 @@ class Servers:
 
         goal_handle.succeed()
 
-        result = Test.Result()
+        result = Trigger.Result()
 
         result.sequence = [5, 4, 3, 2, 1]
 
@@ -123,9 +123,9 @@ class Servers:
 
         goal_handle.succeed()
 
-        result = Test.Result()
+        result = Trigger.Result()
 
-        result.sequence = [1, 2, 3, 4, 5]
+        result.result = "success"
 
         return result
 
@@ -143,9 +143,9 @@ class Servers:
             "\n-------------------- \n End minor1 Action \n--------------------"
         )
         goal_handle.succeed()
-        result = Test.Result()
+        result = Trigger.Result()
 
-        result.sequence = [1, 2, 3, 4, 5]
+        result.result = "success"
 
         return result
 
@@ -162,9 +162,9 @@ class Servers:
             "\n-------------------- \n End minor2 Action \n--------------------"
         )
         goal_handle.succeed()
-        result = Test.Result()
+        result = Trigger.Result()
 
-        result.sequence = [1, 2, 3, 4, 5]
+        result.result = "success"
 
         return result
 
@@ -178,8 +178,8 @@ class Servers:
             "\n-------------------- \n End minor3 Action \n--------------------"
         )
         goal_handle.succeed()
-        result = Test.Result()
+        result = Trigger.Result()
 
-        result.sequence = [1, 2, 3, 4, 5]
+        result.result = "success"
 
         return result

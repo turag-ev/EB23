@@ -33,8 +33,8 @@ async def run(
 
     spin_task = loop.create_task(spinning(imam))
 
-    minor1 = loop.create_task(imam.clis.send_minor1_execute(5))
-    minor2 = loop.create_task(imam.clis.send_minor2_execute(5))
+    minor1 = loop.create_task(imam.clis.send_minor1_execute())
+    minor2 = loop.create_task(imam.clis.send_minor2_execute())
 
     wait_future = asyncio.wait([minor1, minor2])
 
