@@ -11,11 +11,18 @@ class Clients:
         self.minor2_client = ActionClient(self.imam, Trigger, "minor2_execute")
         self.minor3_client = ActionClient(self.imam, Trigger, "minor3_execute")
 
+    def feedback_callback(self, feedback):
+        self.imam.get_logger().info(
+            "Received feedback: {0}".format(feedback.feedback.feedback)
+        )
+
     async def send_minor1_execute(self):
         goal_msg = Trigger.Goal()
         self.minor1_client.wait_for_server()
 
-        goal_handle = await self.minor1_client.send_goal_async(goal_msg)
+        goal_handle = await self.minor1_client.send_goal_async(
+            goal_msg, feedback_callback=self.feedback_callback
+        )
 
         res = await goal_handle.get_result_async()
 
@@ -28,7 +35,9 @@ class Clients:
         goal_msg = Trigger.Goal()
         self.minor2_client.wait_for_server()
 
-        goal_handle = await self.minor2_client.send_goal_async(goal_msg)
+        goal_handle = await self.minor2_client.send_goal_async(
+            goal_msg, feedback_callback=self.feedback_callback
+        )
 
         res = await goal_handle.get_result_async()
 
@@ -41,7 +50,9 @@ class Clients:
         goal_msg = Trigger.Goal()
         self.minor3_client.wait_for_server()
 
-        goal_handle = await self.minor3_client.send_goal_async(goal_msg)
+        goal_handle = await self.minor3_client.send_goal_async(
+            goal_msg, feedback_callback=self.feedback_callback
+        )
 
         res = await goal_handle.get_result_async()
 

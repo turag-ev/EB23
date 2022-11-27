@@ -130,18 +130,22 @@ class Servers:
         return result
 
     async def minor1Callback(self, goal_handle):
-        self.imam.get_logger().info(
-            "\n-------------------- \n Start minor1 Action \n--------------------"
-        )
+        # self.imam.get_logger().info(
+        #    "\n-------------------- \n Start minor1 Action \n--------------------"
+        # )
 
         action = MinorAction1()
 
-        sleep(3)
+        feedback_msg = Trigger.Feedback()
+        for i in range(5):
+            feedback_msg.feedback = f"Processing {i}."
+            goal_handle.publish_feedback(feedback_msg)
+            sleep(1)
 
         # action.execute(self.imam)
-        self.imam.get_logger().info(
-            "\n-------------------- \n End minor1 Action \n--------------------"
-        )
+        # self.imam.get_logger().info(
+        #    "\n-------------------- \n End minor1 Action \n--------------------"
+        # )
         goal_handle.succeed()
         result = Trigger.Result()
 
@@ -150,17 +154,22 @@ class Servers:
         return result
 
     async def minor2Callback(self, goal_handle):
-        self.imam.get_logger().info(
-            "\n-------------------- \n Start minor2 Action \n--------------------"
-        )
+        # self.imam.get_logger().info(
+        #    "\n-------------------- \n Start minor2 Action \n--------------------"
+        # )
         action = MinorAction2()
 
-        sleep(3)
+        feedback_msg = Trigger.Feedback()
+
+        for i in range(5):
+            feedback_msg.feedback = f"Processing {i}."
+            goal_handle.publish_feedback(feedback_msg)
+            sleep(1)
 
         # action.execute(self.imam)
-        self.imam.get_logger().info(
-            "\n-------------------- \n End minor2 Action \n--------------------"
-        )
+        # self.imam.get_logger().info(
+        #    "\n-------------------- \n End minor2 Action \n--------------------"
+        # )
         goal_handle.succeed()
         result = Trigger.Result()
 
@@ -169,14 +178,22 @@ class Servers:
         return result
 
     async def minor3Callback(self, goal_handle):
-        self.imam.get_logger().info(
-            "\n------------------- \n Start minor3 Action \n--------------------"
-        )
+        # self.imam.get_logger().info(
+        #    "\n------------------- \n Start minor3 Action \n--------------------"
+        # )
         action = MinorAction3()
-        action.execute(self.imam)
-        self.imam.get_logger().info(
-            "\n-------------------- \n End minor3 Action \n--------------------"
-        )
+        # action.execute(self.imam)
+
+        feedback_msg = Trigger.Feedback()
+
+        for i in range(5):
+            feedback_msg.feedback = f"Processing {i}."
+            goal_handle.publish_feedback(feedback_msg)
+            sleep(1)
+
+        # self.imam.get_logger().info(
+        #    "\n-------------------- \n End minor3 Action \n--------------------"
+        # )
         goal_handle.succeed()
         result = Trigger.Result()
 
