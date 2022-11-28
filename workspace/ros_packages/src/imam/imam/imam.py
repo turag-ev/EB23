@@ -7,7 +7,9 @@ from .servers import Servers
 from .clients import Clients
 from .subscriber import MinimalSubscriber
 from .publisher import PublisherIM
+from .actuator_state import ActuatorState
 from rclpy.executors import MultiThreadedExecutor
+from EB23_Enums import Actuator
 
 
 class IMAM(Node):
@@ -18,6 +20,8 @@ class IMAM(Node):
         self.clis = Clients(self)
         self.publisher = PublisherIM(self)
         # self.sub = MinimalSubscriber(self)
+        self.actuators = [Actuator.ABC]
+        self.actuator_state = ActuatorState(self.actuators)
 
 
 async def spinning(node: Node, executor):

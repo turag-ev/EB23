@@ -14,6 +14,6 @@ class Action(Enum):
 
 
 @unique
-class ActuatorState(Enum):
+class State(Enum):
     OCCUPIED = auto()
     FREE = auto()
