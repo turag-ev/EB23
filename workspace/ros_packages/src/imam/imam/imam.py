@@ -5,6 +5,7 @@ from asyncio import AbstractEventLoop
 
 from .servers import Servers
 from .clients import Clients
+from .subscriber import MinimalSubscriber
 from .publisher import PublisherIM
 from rclpy.executors import MultiThreadedExecutor
 
@@ -16,6 +17,7 @@ class IMAM(Node):
         self.servers = Servers(self)
         self.clis = Clients(self)
         self.publisher = PublisherIM(self)
+        # self.sub = MinimalSubscriber(self)
 
 
 async def spinning(node: Node, executor):
@@ -32,12 +34,13 @@ async def run(
 
     imam = IMAM(loop)
     executor = MultiThreadedExecutor()
+
     spin_task = loop.create_task(spinning(imam, executor))
 
-    minor1 = loop.create_task(imam.clis.send_minor1_execute())
-    minor2 = loop.create_task(imam.clis.send_minor1_execute())
+    minor1 = loop.create_task(imam.clis.send_pickup_execute())
+    minor2 = loop.create_task(imam.clis.send_pickup_execute())
 
-    wait_future = asyncio.wait([minor1])
+    wait_future = asyncio.wait([minor1, minor2])
 
     finished, unfinished = await wait_future
 

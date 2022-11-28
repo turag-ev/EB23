@@ -1,202 +1,58 @@
 import rclpy
 import asyncio
 from im_actions.action import Trigger
-from .IMA_A import MajorAction1, MinorAction1, MinorAction2, MinorAction3
 from rclpy.action import ActionServer
 from rclpy.callback_groups import ReentrantCallbackGroup
 from time import sleep
+from functools import partial
+
+from .IMA_A import PickUp
+from asyncio import run
 
 
 class Servers:
     def __init__(self, imam):
         self.imam = imam
-        self._prepare_server = ActionServer(
-            self.imam,
-            Trigger,
-            "test_prepare",
-            execute_callback=self.prepareCallback,
-            callback_group=ReentrantCallbackGroup(),
-        )
-        self._execute_server = ActionServer(
-            self.imam,
-            Trigger,
-            "test_execute",
-            execute_callback=self.executeCallback,
-            callback_group=ReentrantCallbackGroup(),
-        )
-        self._post_process_server = ActionServer(
-            self.imam,
-            Trigger,
-            "test_post_process",
-            execute_callback=self.postProcessCallback,
-            callback_group=ReentrantCallbackGroup(),
-        )
-        self._minor1_server = ActionServer(
-            self.imam,
-            Trigger,
-            "minor1_execute",
-            execute_callback=self.minor1Callback,
-            callback_group=ReentrantCallbackGroup(),
-        )
-        self._minor2_server = ActionServer(
-            self.imam,
-            Trigger,
-            "minor2_execute",
-            execute_callback=self.minor2Callback,
-            callback_group=ReentrantCallbackGroup(),
-        )
-        self._minor3_server = ActionServer(
-            self.imam,
-            Trigger,
-            "minor3_execute",
-            execute_callback=self.minor3Callback,
-            callback_group=ReentrantCallbackGroup(),
-        )
+        self.actions = [PickUp]
+        self.action_servers = {}
 
-    async def prepareCallback(self, goal_handle):
+        for action in self.actions:
+            register = action.registerIMA()
 
-        self.imam.get_logger().info(
-            "\n-------------------- \n Start Prepare Action \n--------------------"
-        )
+            for name, properties in register.items():
+                if name in self.action_servers.keys():
+                    self.imam.get_logger().warn(
+                        f"Action Server for {name} already exists. Cannot create more than one server for the same IMA"
+                    )
+                    raise KeyError(
+                        f"Action Server for {name} already exists. Cannot create more than one server for the same IMA"
+                    )
+                print(properties)
+                server = ActionServer(
+                    node=self.imam,
+                    action_type=properties["action_type"],
+                    action_name=f"IMA/{name}",
+                    execute_callback=lambda goal_handle: run(
+                        self.common_callback(goal_handle, properties)
+                    ),
+                    callback_group=ReentrantCallbackGroup(),
+                )
 
-        action = MajorAction1()
+            self.action_servers[name] = server
 
-        used_actuators = action.getActuators()
+    async def common_callback(self, goal_handle, properties):
+        self.imam.get_logger().info(str(properties))
+        actuators_available = True
 
-        # Do we need the ActionClient itself? Or do we just need some information from it?
-        # Maybe we can send client data as request params
-        await action.prepare(self.imam)
+        if actuators_available:
+            for i in range(5):
+                print("hello")
+                self.imam.get_logger().info(f"Processing {i}.")
+                sleep(1)
 
-        self.imam.get_logger().info(
-            "\n-------------------- \n End Prepare Action \n--------------------"
-        )
-
-        goal_handle.succeed()
-
-        result = Trigger.Result()
-
-        result.sequence = [1, 2, 3, 5, 8]
-
-        return result
-
-    async def executeCallback(self, goal_handle):
-        self.imam.get_logger().info(
-            "\n-------------------- \n Start Execute Action \n --------------------"
-        )
-        action = MajorAction1()
-
-        used_actuators = action.getActuators()
-
-        await asyncio.sleep(3)
-        # sleep(3)
-
-        # await action.execute(self.imam)
-
-        self.imam.get_logger().info(
-            "\n-------------------- \n End Execute Action \n--------------------"
-        )
-
-        goal_handle.succeed()
-
-        result = Trigger.Result()
-
-        result.sequence = [5, 4, 3, 2, 1]
-
-        return result
-
-    async def postProcessCallback(self, goal_handle):
-        self.imam.get_logger().info(
-            "\n-------------------- \n Start Post Process Action \n--------------------"
-        )
-        action = MajorAction1()
-
-        used_actuators = action.getActuators()
-
-        await asyncio.sleep(3)
-        # sleep(3)
-
-        # await action.postProcess(self.imam)
-
-        self.imam.get_logger().info(
-            "\n-------------------- \n End Post Process Action \n--------------------"
-        )
-
-        goal_handle.succeed()
-
-        result = Trigger.Result()
-
-        result.result = "success"
-
-        return result
-
-    async def minor1Callback(self, goal_handle):
-        # self.imam.get_logger().info(
-        #    "\n-------------------- \n Start minor1 Action \n--------------------"
-        # )
-
-        action = MinorAction1()
-
-        feedback_msg = Trigger.Feedback()
-        for i in range(5):
-            feedback_msg.feedback = f"Processing {i}."
-            goal_handle.publish_feedback(feedback_msg)
-            sleep(1)
-
-        # action.execute(self.imam)
-        # self.imam.get_logger().info(
-        #    "\n-------------------- \n End minor1 Action \n--------------------"
-        # )
-        goal_handle.succeed()
-        result = Trigger.Result()
-
-        result.result = "success"
-
-        return result
-
-    async def minor2Callback(self, goal_handle):
-        # self.imam.get_logger().info(
-        #    "\n-------------------- \n Start minor2 Action \n--------------------"
-        # )
-        action = MinorAction2()
-
-        feedback_msg = Trigger.Feedback()
-
-        for i in range(5):
-            feedback_msg.feedback = f"Processing {i}."
-            goal_handle.publish_feedback(feedback_msg)
-            sleep(1)
-
-        # action.execute(self.imam)
-        # self.imam.get_logger().info(
-        #    "\n-------------------- \n End minor2 Action \n--------------------"
-        # )
-        goal_handle.succeed()
-        result = Trigger.Result()
-
-        result.result = "success"
-
-        return result
-
-    async def minor3Callback(self, goal_handle):
-        # self.imam.get_logger().info(
-        #    "\n------------------- \n Start minor3 Action \n--------------------"
-        # )
-        action = MinorAction3()
-        # action.execute(self.imam)
-
-        feedback_msg = Trigger.Feedback()
-
-        for i in range(5):
-            feedback_msg.feedback = f"Processing {i}."
-            goal_handle.publish_feedback(feedback_msg)
-            sleep(1)
-
-        # self.imam.get_logger().info(
-        #    "\n-------------------- \n End minor3 Action \n--------------------"
-        # )
-        goal_handle.succeed()
-        result = Trigger.Result()
-
-        result.result = "success"
+            goal_handle.succeed()
+            action_type = properties["action_type"]
+            result = action_type.Result()
+            result.result = "Done"
 
         return result
