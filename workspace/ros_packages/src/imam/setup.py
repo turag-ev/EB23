@@ -19,7 +19,8 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "main = imam.imam:main",
+            "console_control = imam.imam:console_control",
+            "test = imam.imam:test",
         ],
     },
 )

@@ -42,7 +42,7 @@ async def spinning(node: Node, executor):
         await asyncio.sleep(0.001)
 
 
-async def run(
+async def run_example(
     loop: AbstractEventLoop,
     args=None,
 ):
@@ -64,9 +64,23 @@ async def run(
         imam.get_logger().info("result {} and status flag {}".format(*task.result()))
 
     while True:
-        await asyncio.sleep(0.01)
+        await asyncio.sleep(0.001)
 
+async def run_console(loop: AbstractEventLoop, args=None):
+    rclpy.init()
 
-def main():
+    imam = IMAM(loop)
+    executor = MultiThreadedExecutor()
+
+    spin_task = loop.create_task(spinning(imam, executor))
+
+    while True:
+        await asyncio.sleep(0.001)
+
+def test():
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(run(loop=loop))
+    loop.run_until_complete(run_example(loop=loop))
+
+def console_control():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_console(loop=loop))
