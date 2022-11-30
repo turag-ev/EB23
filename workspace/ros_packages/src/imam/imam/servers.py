@@ -4,16 +4,15 @@ from im_actions.action import Trigger
 from rclpy.action import ActionServer
 from rclpy.callback_groups import ReentrantCallbackGroup
 from time import sleep
-from functools import partial
 
-from .IMA_A import PickUp
+from .IMA_A import PickUp, Store, BuildCake, Drop
 from asyncio import run
 
 
 class Servers:
     def __init__(self, imam):
         self.imam = imam
-        self.actions = [PickUp]
+        self.actions = [PickUp, Store, BuildCake, Drop]
         self.action_servers = {}
 
         for action in self.actions:

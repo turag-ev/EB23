@@ -31,7 +31,3 @@ class PickUp(IMA):
         future = asyncio.wait([sub_task1, sub_task2])
 
         return True
-
-
-if __name__ == "__main__":
-    print(PickUp.registerIMA())
