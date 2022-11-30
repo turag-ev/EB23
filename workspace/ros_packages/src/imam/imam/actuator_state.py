@@ -6,9 +6,8 @@ class ActuatorState:
     Class to define the operating state of actuators.
     """
 
-    actuator_state: dict
-
     def __init__(self, actuators: list) -> None:
+        self.actuator_state: dict = {}
         for actuator in actuators:
             self.actuator_state[actuator] = State.FREE
 
