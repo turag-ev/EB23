@@ -54,14 +54,17 @@ async def run(
     spin_task = loop.create_task(spinning(imam, executor))
 
     minor1 = loop.create_task(imam.clis.send_pickup_execute())
-    minor2 = loop.create_task(imam.clis.send_pickup_execute())
+    # minor2 = loop.create_task(imam.clis.send_pickup_execute())
 
-    wait_future = asyncio.wait([minor1, minor2])
+    wait_future = asyncio.wait([minor1])
 
     finished, unfinished = await wait_future
 
     for task in finished:
         imam.get_logger().info("result {} and status flag {}".format(*task.result()))
+
+    while True:
+        await asyncio.sleep(0.01)
 
 
 def main():

@@ -2,6 +2,7 @@ from im_actions.action import Trigger
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
+import asyncio
 
 
 class PickUp(IMA):
@@ -24,6 +25,11 @@ class PickUp(IMA):
         for i in range(10):
             imam.log_info(f"Picking Up {i}")
             sleep(0.5)
+
+        sub_task1 = imam.loop.create_task(imam.clis.send_pickup_execute())
+        sub_task2 = imam.loop.create_task(imam.clis.send_pickup_execute())
+        future = asyncio.wait([sub_task1, sub_task2])
+
         return True
 
 
