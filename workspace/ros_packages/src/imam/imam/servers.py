@@ -30,7 +30,7 @@ class Servers:
                     node=self.imam,
                     action_type=properties["action_type"],
                     action_name=f"IMA/{name}",
-                    execute_callback=lambda goal_handle: run(
+                    execute_callback=lambda goal_handle, properties=properties: run(
                         self.common_callback(goal_handle, properties)
                     ),
                     callback_group=ReentrantCallbackGroup(),
