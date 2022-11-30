@@ -4,6 +4,11 @@ from enum import Enum, auto, unique
 @unique
 class Actuator(Enum):
     ABC = auto()
+    MOTOR1 = auto()
+    MOTOR2 = auto()
+    MOTOR3 = auto()
+    MOTOR4 = auto()
+    MOTOR5 = auto()
 
 
 @unique
