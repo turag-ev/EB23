@@ -1,4 +1,4 @@
-from EB23_Enums import ActuatorState
+from EB23_Enums import State
 
 
 class ActuatorState:
@@ -10,7 +10,7 @@ class ActuatorState:
 
     def __init__(self, actuators: list) -> None:
         for actuator in actuators:
-            self.actuator_state[actuator] = ActuatorState.FREE
+            self.actuator_state[actuator] = State.FREE
 
     def getActuatorState(self) -> dict:
         """
@@ -23,7 +23,7 @@ class ActuatorState:
 
     def check_availability(self, requested_actuators: list) -> bool:
         for actuator in requested_actuators:
-            if self.actuator_state[actuator] != ActuatorState.FREE:
+            if self.actuator_state[actuator] != State.FREE:
                 return False
         return True
 
@@ -33,10 +33,10 @@ class ActuatorState:
 
         else:
             for actuator in requested_actuators:
-                self.actuator_state[actuator] = ActuatorState.OCCUPIED
+                self.actuator_state[actuator] = State.OCCUPIED
 
             return True
 
     def free_actuators(self, actuators: list):
         for actuator in actuators:
-            self.actuator_state[actuator] = ActuatorState.FREE
+            self.actuator_state[actuator] = State.FREE
