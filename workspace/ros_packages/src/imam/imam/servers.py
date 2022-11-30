@@ -26,7 +26,6 @@ class Servers:
                     raise KeyError(
                         f"Action Server for {name} already exists. Cannot create more than one server for the same IMA"
                     )
-                print(properties)
                 server = ActionServer(
                     node=self.imam,
                     action_type=properties["action_type"],
@@ -37,11 +36,13 @@ class Servers:
                     callback_group=ReentrantCallbackGroup(),
                 )
 
-            self.action_servers[name] = server
+                self.imam.log_info(f"Registered Action Server for {name}.")
+                self.action_servers[name] = server
 
     async def common_callback(self, goal_handle, properties):
-        self.imam.get_logger().info(str(properties))
-        actuators_available = True
+        actuators_available = self.imam.actuator_state.request_actuators(
+            properties["required_actuators"]
+        )
 
         if actuators_available:
             action = properties["IMA"]()
@@ -50,5 +51,16 @@ class Servers:
             action_type = properties["action_type"]
             result = action_type.Result()
             result.result = "Done"
+        else:
+            action_class = properties["IMA"]
+            self.imam.log_info(
+                f"Not all required motors are available to execute {action_class}"
+            )
+            goal_handle.succeed()
+            action_type = properties["action_type"]
+            result = action_type.Result()
+            result.result = "Done"
+
+            # TODO implement queue check / rejection
 
         return result
