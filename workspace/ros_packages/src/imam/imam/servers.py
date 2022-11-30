@@ -45,11 +45,8 @@ class Servers:
         actuators_available = True
 
         if actuators_available:
-            for i in range(5):
-                print("hello")
-                self.imam.get_logger().info(f"Processing {i}.")
-                sleep(1)
-
+            action = properties["IMA"]()
+            action.execute(self.imam, goal_handle)
             goal_handle.succeed()
             action_type = properties["action_type"]
             result = action_type.Result()

@@ -1,6 +1,7 @@
 from im_actions.action import Trigger
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
+from time import sleep
 
 
 class PickUp(IMA):
@@ -20,6 +21,9 @@ class PickUp(IMA):
         return register
 
     def execute(self, imam: object, goal_handle, **kwargs) -> bool:
+        for i in range(10):
+            imam.log_info(f"Picking Up {i}")
+            sleep(0.5)
         return True
 
 
