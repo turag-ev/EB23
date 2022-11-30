@@ -8,7 +8,7 @@ These robot actions can be started via ros actions.
 To see which actions and their according types are available run 
   
 ```bash
-ros2 run imam main
+ros2 run imam console_control
 ```
   
 and then 
@@ -22,3 +22,10 @@ In order to run actions via console run
 ```bash
 ros2 action send_goal <action_name> <action_type> <goal>
 ```
+
+If you would like to run the example/ test code run  
+  
+```bash
+ros2 run imam test
+```
+
