@@ -23,6 +23,18 @@ class IMAM(Node):
         self.actuators = [Actuator.ABC]
         self.actuator_state = ActuatorState(self.actuators)
 
+    def log_debug(self, message):
+        self.get_logger().debug(message)
+
+    def log_info(self, message):
+        self.get_logger().info(message)
+
+    def log_warn(self, message):
+        self.get_logger().warn(message)
+
+    def log_error(self, message):
+        self.get_logger().error(message)
+
 
 async def spinning(node: Node, executor):
     while rclpy.ok():
