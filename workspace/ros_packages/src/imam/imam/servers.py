@@ -5,14 +5,20 @@ from rclpy.action import ActionServer
 from rclpy.callback_groups import ReentrantCallbackGroup
 from time import sleep
 
+import IMA_Interface
 from .IMA_A import PickUp, Store, BuildCake, Drop
 from asyncio import run
+import sys
+import inspect
 
 
 class Servers:
     def __init__(self, imam):
         self.imam = imam
-        self.actions = [PickUp, Store, BuildCake, Drop]
+        self.actions = []  # [PickUp, Store, BuildCake, Drop]
+        for _, cls in inspect.getmembers(sys.modules[__name__]):
+            if inspect.isclass(cls) and issubclass(cls, IMA_Interface.IMA):
+                self.actions.append(cls)
         self.action_servers = {}
 
         for action in self.actions:
