@@ -26,15 +26,11 @@ class ActuatorState:
                 return False
         return True
 
-    def request_actuators(self, requested_actuators: list) -> bool:
-        if not self.check_availability(requested_actuators):
-            return False
+    def reserve_actuators(self, requested_actuators: list) -> bool:
+        for actuator in requested_actuators:
+            self.actuator_state[actuator] = State.OCCUPIED
 
-        else:
-            for actuator in requested_actuators:
-                self.actuator_state[actuator] = State.OCCUPIED
-
-            return True
+        return True
 
     def free_actuators(self, actuators: list):
         for actuator in actuators:

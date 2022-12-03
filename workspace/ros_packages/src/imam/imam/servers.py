@@ -46,17 +46,19 @@ class Servers:
                 self.action_servers[name] = server
 
     async def common_callback(self, goal_handle, properties):
-        actuators_available = self.imam.actuator_state.request_actuators(
+        actuators_available = self.imam.actuator_state.check_availability(
             properties["required_actuators"]
         )
 
         if actuators_available:
+            self.imam.actuator_state.reserve_actuators(properties["required_actuators"])
             action = properties["IMA"]()
             action.execute(self.imam, goal_handle)
             goal_handle.succeed()
             action_type = properties["action_type"]
             result = action_type.Result()
             result.result = "Done"
+            self.imam.actuator_state.free_actuators(properties["required_actuators"])
         else:
             action_class = properties["IMA"]
             self.imam.log_info(
