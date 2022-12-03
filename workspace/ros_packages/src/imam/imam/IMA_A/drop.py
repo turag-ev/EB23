@@ -25,5 +25,3 @@ class Drop(IMA):
         for i in range(10):
             imam.log_info(f"Dropping {i}")
             sleep(0.5)
-
-        return True

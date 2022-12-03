@@ -25,5 +25,3 @@ class Store(IMA):
         for i in range(10):
             imam.log_info(f"Storing {i}")
             sleep(0.5)
-
-        return True

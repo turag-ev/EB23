@@ -25,5 +25,3 @@ class BuildCake(IMA):
         for i in range(10):
             imam.log_info(f"Building Cake {i}")
             sleep(0.5)
-
-        return True

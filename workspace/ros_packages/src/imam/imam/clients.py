@@ -8,6 +8,9 @@ class Clients:
     def __init__(self, imam):
         self.imam = imam
         self.pickup_client = ActionClient(self.imam, Trigger, "IMA/PickUp")
+        self.drop_client = ActionClient(self.imam, Trigger, "IMA/Drop")
+        self.store_client = ActionClient(self.imam, Trigger, "IMA/Store")
+        self.build_cake_client = ActionClient(self.imam, Trigger, "IMA/BuildCake")
 
     def feedback_callback(self, feedback):
         self.imam.get_logger().info(
@@ -29,11 +32,11 @@ class Clients:
 
         return result, status
 
-    async def send_minor1_execute(self):
+    async def send_drop_execute(self):
         goal_msg = Trigger.Goal()
-        self.minor1_client.wait_for_server()
+        self.drop_client.wait_for_server()
 
-        goal_handle = await self.minor1_client.send_goal_async(
+        goal_handle = await self.drop_client.send_goal_async(
             goal_msg, feedback_callback=self.feedback_callback
         )
 
@@ -44,11 +47,11 @@ class Clients:
 
         return result, status
 
-    async def send_minor2_execute(self):
+    async def send_store_execute(self):
         goal_msg = Trigger.Goal()
-        self.minor2_client.wait_for_server()
+        self.store_client.wait_for_server()
 
-        goal_handle = await self.minor2_client.send_goal_async(
+        goal_handle = await self.store_client.send_goal_async(
             goal_msg, feedback_callback=self.feedback_callback
         )
 
@@ -59,11 +62,11 @@ class Clients:
 
         return result, status
 
-    async def send_minor3_execute(self):
+    async def send_build_cake_execute(self):
         goal_msg = Trigger.Goal()
-        self.minor3_client.wait_for_server()
+        self.build_cake_client.wait_for_server()
 
-        goal_handle = await self.minor3_client.send_goal_async(
+        goal_handle = await self.build_cake_client.send_goal_async(
             goal_msg, feedback_callback=self.feedback_callback
         )
 
