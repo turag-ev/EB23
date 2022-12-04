@@ -20,8 +20,7 @@ class IMAM(Node):
         self.clis = Clients(self)
         self.publisher = PublisherIM(self)
         # self.sub = MinimalSubscriber(self)
-        self.actuators = [Actuator.ABC]
-        self.actuator_state = ActuatorState(self.actuators)
+        self.actuator_state = ActuatorState()
 
     def log_debug(self, message):
         self.get_logger().debug(message)
@@ -66,6 +65,7 @@ async def run_example(
     while True:
         await asyncio.sleep(0.001)
 
+
 async def run_console(loop: AbstractEventLoop, args=None):
     rclpy.init()
 
@@ -77,9 +77,11 @@ async def run_console(loop: AbstractEventLoop, args=None):
     while True:
         await asyncio.sleep(0.001)
 
+
 def test():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run_example(loop=loop))
+
 
 def console_control():
     loop = asyncio.get_event_loop()

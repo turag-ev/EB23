@@ -14,7 +14,7 @@ class Drop(IMA):
         properties = {}
         properties["IMA"] = Drop
         properties["action_type"] = Trigger
-        properties["required_actuators"] = []
+        properties["required_actuators"] = [Actuator.MOTOR1]
 
         register = {}
         register["Drop"] = properties

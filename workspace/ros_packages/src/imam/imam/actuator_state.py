@@ -1,4 +1,5 @@
 from EB23_Enums import State
+from EB23_Enums import Actuator
 
 
 class ActuatorState:
@@ -6,9 +7,10 @@ class ActuatorState:
     Class to define the operating state of actuators.
     """
 
-    def __init__(self, actuators: list) -> None:
+    def __init__(self) -> None:
+        self.actuators = [actuator for actuator in Actuator]
         self.actuator_state: dict = {}
-        for actuator in actuators:
+        for actuator in self.actuators:
             self.actuator_state[actuator] = State.FREE
 
     def getActuatorState(self) -> dict:
