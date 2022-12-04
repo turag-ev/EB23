@@ -22,6 +22,11 @@ class Drop(IMA):
         return register
 
     def execute(self, imam: object, goal_handle, **kwargs) -> True:
+
         for i in range(10):
             imam.log_info(f"Dropping {i}")
+            if goal_handle.is_cancel_requested:
+                return False
             sleep(0.5)
+
+        return True
