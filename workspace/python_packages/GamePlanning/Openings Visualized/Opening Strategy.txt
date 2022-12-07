@@ -1,0 +1,9 @@
+Der Kuchen Bot startet auf Unserem Feld 4
+Die Bilder nehmen an, dass wir das grüne Team sind
+
+
+Wenn kein Gegener Roboter auf Feld 4: SHORT
+
+Wenn Gegener auf Feld 4 und kein Gegner auf Feld 1: TOP
+
+Wenn Gegner auf Feld 4 und Feld 1: LONG
