@@ -15,11 +15,12 @@ from abc import ABC, abstractmethod
 import os
 import sys
 
-# TODO: why do we need the following 3 lines?
+# TODO: why do we need the following 3 lines? -> I don't think so (AH)
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
+# TODO: I dont think we need this later since we won't return MovementOrders but just points, but we'll see later, I guess
 from EB23_Enums import OrderType
 
 
