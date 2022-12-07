@@ -1,9 +1,40 @@
-class PickUp():
+from abc import ABC, abstractmethod
+
+
+class GameAction(ABC):
+    """
+    Abstract base class for game actions.
+    """
+
+    def __init__(self, id: str):
+        self.id = id
+
+    @abstractmethod
+    def setup(config):
+        pass
+
+    @abstractmethod
+    def checkExecutability(self, state) -> bool:
+        pass
+
+    # TODO Consider using union type instead of kw_args
+    @abstractmethod
+    def preProcess(self, **kw_args):
+        pass
+
+    @abstractmethod
+    def process(self, **kw_args):
+        pass
+
+    @abstractmethod
+    def postProcess(self, **kw_args):
+        pass
+
+
+class PickUp(GameAction):
     """
     Interface for pick-up game action.
     """
-    def __init__(self):
-        return
 
     def setup(config):
         return
@@ -11,25 +42,20 @@ class PickUp():
     def checkExecutability(self, state) -> bool:
         return True
 
-    @abstractmethod
-    def preProcess(self, **kw_actuators):
+    def preProcess(self, **kw_args):
         pass
 
-    @abstractmethod
-    def process(self, **kw_actuators):
+    def process(self, **kw_args):
         pass
 
-    @abstractmethod
-    def postProcess(self, **kw_actuators):
+    def postProcess(self, **kw_args):
         pass
 
 
-class Store():
+class Store(GameAction):
     """
     Interface for store game action.
     """
-    def __init__(self):
-        return
 
     def setup(config):
         return
@@ -37,14 +63,12 @@ class Store():
     def checkExecutability(self, state) -> bool:
         return True
 
-    @abstractmethod
-    def preProcess(self, **kw_actuators):
+    def preProcess(self, **kw_args):
         pass
 
-    @abstractmethod
-    def process(self, **kw_actuators):
+    def process(self, **kw_args):
         pass
 
-    @abstractmethod
-    def postProcess(self, **kw_actuators):
+    def postProcess(self, **kw_args):
         pass
+
