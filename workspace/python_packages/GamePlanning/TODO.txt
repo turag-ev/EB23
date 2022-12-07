@@ -1,0 +1,44 @@
+HIGH PRIO:
+---------
+
+
+documentation
+
+
+make cake and spawn locations right. 
+the coordinate system they were messures on might not be kongruent to the one the bot uses
+it used a coordinate system with the origin in the lower left, y axis going up, x axis going right
+bot uses the long side as x
+
+
+actual ros intergration
+
+
+a way to config the programm
+
+
+
+MID PRIO: 
+---------
+
+
+what could go wrong
+
+
+
+make opening carefull
+
+
+opening Long might need more work
+if the enemy on 5 goes after the bottom cakes (for wehatever reason)
+strategy will break
+
+
+
+
+
+
+
+
+
+
