@@ -12,6 +12,7 @@ from .IMA_A import PickUp, Store, BuildCake, Drop
 from asyncio import run
 import sys
 import inspect
+import threading
 
 
 class Servers:
@@ -23,6 +24,7 @@ class Servers:
                 self.actions.append(cls)
 
         self._goal_queue = collections.deque()
+        self._goal_queue_lock = threading.Lock()
 
         self.action_servers = {}
 
@@ -94,7 +96,11 @@ class Servers:
             properties (dict): properties of IMA
         """
         name = properties["IMA"]
-        self._goal_queue.append((goal_handle, properties["required_actuators"]))
+        if goal_handle.request.queue_goal:
+            self._goal_queue.append((goal_handle, properties["required_actuators"]))
+        else:
+            self._goal_queue.appendleft((goal_handle, properties["required_actuators"]))
+            
         self.imam.log_info(f"Added {name} to action queue.")
 
     async def goal_callback(self, goal_request, properties: dict):
