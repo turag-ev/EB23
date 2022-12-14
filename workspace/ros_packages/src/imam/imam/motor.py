@@ -3,7 +3,7 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from time import sleep
 
-from imam import IMAM
+from .imam import IMAM
 
 class Motor:
     def __init__(self, name, imam: Node) -> None:
