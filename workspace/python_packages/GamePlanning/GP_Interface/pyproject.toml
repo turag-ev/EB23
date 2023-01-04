@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "GP_Interface"
+version = "0.0.1"
+authors = [
+  { name="Eric Bush", email="eric.bush@mailbox.tu-dresden.de" },
+]
+description = "Game Planning Actions Interface for Eurobot 2023"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+dependencies = [
+  "black",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[tools.setuptools]
+include-package-data = true
