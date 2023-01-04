@@ -1,17 +1,14 @@
+from dataclasses import dataclass;
 from typing import Optional
 from enum import Enum
 import enum
 
-
+@dataclass
 class position:
     x: int
     y: int
 
-    def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
-
-
+@dataclass
 class angle:
     angle: float
 
@@ -26,13 +23,10 @@ class color(Enum):
 
 
 # represents a stack of 3 cake layers
+@dataclass
 class Cake:
     color: color
     position: position
-
-    def __init__(self, color: color, position: position):
-        self.color = color
-        self.position = position
 
 
 class team(Enum):
@@ -40,7 +34,7 @@ class team(Enum):
     BLUE = 1
 
 
-
+@dataclass
 class Bot:
     # general attributes of a Bot
     position: position
@@ -49,43 +43,47 @@ class Bot:
 
     team: team
 
-
+@dataclass
 class FriendlyBot(Bot):
     enemy: bool = False
 
-    storage: list[list[Cake]]
+    storage: list[list[Cake]] = []
     revolver: int = 0
 
+@dataclass
+class property:
+    able: bool = False
 
+    known: bool  = False
+    haveGuess: bool = False
+
+@dataclass
 class EnemyBot(Bot):
     enemy: bool = True
 
     # capability of picking up cakes
     # if it is None, it is unknown whether is can or not
-    can_pickup: Optional[bool]
-    storage: list[color]
+    can_pickup: property = property()
+    storage: list[color] = []
 
     # capability of pushing cakes
     # if it is None, it is unknown whether is can or not
-    can_push: Optional[bool]
+    can_push: property = property()
 
     # capability of picking up cherries
     # if it is None, it is unknown whether is can or not
-    can_cherries: Optional[bool]
-    cherry_Storage: int
+    can_cherries: property = property()
+    cherry_Storage: int = 0
 
     def couldAffectCake(self) -> bool:
         return (
-            (self.can_pickup is None)
-            or (self.can_pickup)
-            or (self.can_push is None)
-            or (self.can_push)
+            not self.can_pickup.known or self.can_pickup.able or not self.can_push.known or self.can_push.able
         )
 
     # if can_pickup or can_push is None, it is unknown to us 
     # whether it can pickup the cake or nor, or whether it can push the cake or not
     def hasUnknowns(self) -> bool:
-        return (self.can_pickup is None) or (self.can_push is None)
+        return not self.can_cherries.known or not self.can_cake.known or not self.can_push.known
 
 
 
@@ -115,7 +113,7 @@ class Strategies(Enum):
     # Fallback
     FALLBACK = enum.auto()
 
-
+@dataclass
 class State:
     gamestage: Gamestage = None
     strategy: Strategies = None
