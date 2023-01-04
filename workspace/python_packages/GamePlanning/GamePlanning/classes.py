@@ -4,7 +4,7 @@ from enum import Enum
 import enum
 
 @dataclass
-class position:
+class Position:
     x: int
     y: int
 
@@ -26,10 +26,10 @@ class color(Enum):
 @dataclass
 class Cake:
     color: color
-    position: position
+    position: Position
 
 
-class team(Enum):
+class Team(Enum):
     GREEN = 0
     BLUE = 1
 
@@ -37,17 +37,17 @@ class team(Enum):
 @dataclass
 class Bot:
     # general attributes of a Bot
-    position: position
+    position: Position
     angle: angle
     velocity: float
 
-    team: team
+    team: Team
 
 @dataclass
 class FriendlyBot(Bot):
     enemy: bool = False
 
-    storage: list[list[Cake]] = []
+    storage: list[list[color]] = []
     revolver: int = 0
 
 @dataclass
@@ -65,6 +65,8 @@ class EnemyBot(Bot):
     # if it is None, it is unknown whether is can or not
     can_pickup: property = property()
     storage: list[color] = []
+    dropped: list[color] = []
+
 
     # capability of pushing cakes
     # if it is None, it is unknown whether is can or not

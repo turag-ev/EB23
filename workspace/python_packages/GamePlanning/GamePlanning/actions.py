@@ -34,8 +34,17 @@ def getCake(cake: Cake):
 # places it down
 # builds the rest
 # places the rest down
-def submitCake(square: position):
+def submitCake(square: Position):
     pass
+
+
+def gotoBase(square: Position):
+    pass
+
+
+def cancelActions():
+    pass
+
 
 
 # if one of the above methods is done, increaments state.step by one

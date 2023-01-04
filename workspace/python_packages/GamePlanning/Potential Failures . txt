@@ -1,0 +1,23 @@
+
+
+MUST BE FIXED:
+-------------
+
+
+
+
+MID PROBABILITY:
+----------------
+
+
+
+
+IRRELEVANT:
+-----------
+
+code updating the storage of the enemy bot assumes
+that if 3 cakes of pink color were dropped when the enmemy, 
+was capac´ble of making a perfect recepe ,that those 3 cakes were
+cakes with the perfect recipe. This will cause a misalignment
+of program to reality, if the enemy actually drops 3 pink cakes 
+in one go. This is very unprobable
