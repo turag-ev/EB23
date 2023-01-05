@@ -35,7 +35,17 @@ endif()
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "drive_messages/Force.msg"
+  "drive_messages/Pose.msg"
+  "drive_messages/Spline.msg"
   "action/Test.action"
   "action/Trigger.action"
+  "drive_actions/DrivePath.action"
+  "drive_actions/DriveEmergencyStop.action"
+  "drive_actions/DriveSoftStop.action"
+  "drive_actions/DriveRelease.action"
+  "drive_actions/DriveRelative.action"
+  "drive_actions/DriveToPose.action"
+  "drive_actions/DriveForce.action"
 )
 ament_package()
