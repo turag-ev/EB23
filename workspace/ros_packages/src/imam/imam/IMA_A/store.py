@@ -2,7 +2,7 @@ from im_actions.action import Trigger
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
-import asyncio
+from rclpy.node import Node
 
 
 class Store(IMA):
@@ -21,7 +21,7 @@ class Store(IMA):
 
         return register
 
-    def execute(self, imam: object, goal_handle, **kwargs) -> True:
+    def execute(self, imam: Node, goal_handle, **kwargs) -> True:
         for i in range(10):
             imam.log_info(f"Storing {i}")
             sleep(0.5)

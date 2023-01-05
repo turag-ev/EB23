@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./python_packages/turag_lmc",
+        "./python_packages/Helpers/Enumerations",
+        "./python_packages/InternalMechanics/IMA_Interface"
+    ]
+}

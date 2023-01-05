@@ -101,6 +101,12 @@ class DR:
     RAMP_SLOW   = DriveRamp(0.3, 1.0,  2.4,   7.2)
     RAMP_MEDIUM = DriveRamp(0.6, 1.0,  4.8,  14.4)
     RAMP_FAST   = DriveRamp(1.0, 1.5,  6.0,  18.0)
+
+    ramp_dict = {
+        "slow": RAMP_SLOW,
+        "medium": RAMP_MEDIUM,
+        "fast": RAMP_FAST
+    }
     # TODO: please delete when you define drive ramps elsewhere
 
 

@@ -2,7 +2,7 @@ from im_actions.action import Trigger
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
-import asyncio
+from rclpy.node import Node
 
 
 class PickUp(IMA):
@@ -21,7 +21,7 @@ class PickUp(IMA):
 
         return register
 
-    def execute(self, imam: object, goal_handle, **kwargs) -> bool:
+    def execute(self, imam: Node, goal_handle, **kwargs) -> bool:
         for i in range(5):
             imam.log_info(f"Picking Up {i}")
             sleep(0.5)

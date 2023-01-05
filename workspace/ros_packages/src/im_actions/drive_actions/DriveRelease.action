@@ -1,4 +1,5 @@
 bool queue_goal True
+string ramp "medium"
 ---
 bool success
 ---

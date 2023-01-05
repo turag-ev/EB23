@@ -10,6 +10,7 @@ from .publisher import PublisherIM
 from .actuator_state import ActuatorState
 from rclpy.executors import MultiThreadedExecutor
 from EB23_Enums import Actuator
+from turag_lmc import LMCConnection, LMCParameters
 
 
 class IMAM(Node):
@@ -21,6 +22,12 @@ class IMAM(Node):
         self.publisher = PublisherIM(self)
         # self.sub = MinimalSubscriber(self)
         self.actuator_state = ActuatorState()
+        self.lmc = LMCConnection("/dev/ttyACM0")
+    
+    def initialize_lmc(self):
+        self.lmc.startConnection()
+        self.lmc.getParameter(LMCParameters.WEIGHT)
+        self.lmc.setParameter(LMCParameters.WEIGHT, 5.3)
 
     def log_debug(self, message):
         self.get_logger().debug(message)
