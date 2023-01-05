@@ -1,7 +1,7 @@
 bool queue_goal True
 Pose pose
-str ramp "fast" # default fast
-int drive_flag 0 # default forward
+string ramp "fast" # default fast
+int64 drive_flag 0 # default forward
 ---
 bool success
 ---

@@ -115,6 +115,8 @@ class Servers:
         name = properties["IMA"]
         if goal_handle.request.queue_goal:
             self._goal_queue.append((goal_handle, properties["required_actuators"]))
+        elif name in [DriveEmergencyStop, DriveSoftStop]:
+            goal_handle.execute()
         else:
             self._goal_queue.appendleft((goal_handle, properties["required_actuators"]))
 
@@ -133,8 +135,12 @@ class Servers:
         """
         name = properties["IMA"]
 
-        if goal_request.queue_goal or self.imam.actuator_state.check_availability(
-            properties["required_actuators"]
+        if (
+            goal_request.queue_goal
+            or self.imam.actuator_state.check_availability(
+                properties["required_actuators"]
+            )
+            or name in [DriveEmergencyStop, DriveSoftStop]
         ):
             return GoalResponse.ACCEPT
         else:
