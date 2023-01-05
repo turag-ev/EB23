@@ -59,7 +59,7 @@ class Servers:
                 self.imam.log_info(f"Registered Action Server for {name}.")
                 self.action_servers[name] = server
 
-                self._timer = self.imam.create_timer(0.2, self.execute_queued_goal)
+        self._timer = self.imam.create_timer(0.2, self.execute_queued_goal)
 
     async def common_callback(self, goal_handle, properties: dict):
         """
