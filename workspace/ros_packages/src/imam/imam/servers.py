@@ -1,71 +1,163 @@
 import rclpy
-from im_actions.action import Test
-from .IMA_A import MajorAction1
-from rclpy.action import ActionServer
+import asyncio
+from im_actions.action import Trigger
+from rclpy.action import ActionServer, GoalResponse, CancelResponse
+from rclpy.callback_groups import ReentrantCallbackGroup
+from rclpy.timer import Timer
+from time import sleep
+import collections
+
+import IMA_Interface
+from .IMA_A import PickUp, Store, BuildCake, Drop
+from asyncio import run
+import sys
+import inspect
+import threading
 
 
 class Servers:
     def __init__(self, imam):
         self.imam = imam
-        self._prepare_server = ActionServer(
-            self.imam, Test, "test_prepare", self.prepareCallback
-        )
-        self._execute_server = ActionServer(
-            self.imam, Test, "test_execute", self.executeCallback
-        )
-        self._post_process_server = ActionServer(
-            self.imam, Test, "test_post_process", self.postProcessCallback
-        )
+        self.actions = []  # [PickUp, Store, BuildCake, Drop]
+        for _, cls in inspect.getmembers(sys.modules[__name__]):
+            if inspect.isclass(cls) and issubclass(cls, IMA_Interface.IMA):
+                self.actions.append(cls)
 
-    def prepareCallback(self, goal_handle):
-        action = MajorAction1()
+        self._goal_queue = collections.deque()
+        self._goal_queue_lock = threading.Lock()
 
-        used_actuators = action.getActuators()
+        self.action_servers = {}
 
-        # Do we need the ActionClient itself? Or do we just need some information from it?
-        # Maybe we can send client data as request params
-        action.prepare(self.imam)
+        self.initialize_actions()
 
-        self.imam.get_logger().info("Preparing...")
+        self._timer = self.imam.create_timer(0.2, self.execute_queued_goal)
+    
+    def initialize_actions(self):
+        """
+        This function is used to initialize all action servers.
+        """
+        for action in self.actions:
+            register = action.registerIMA()
 
-        goal_handle.succeed()
+            for name, properties in register.items():
+                if name in self.action_servers.keys():
+                    self.imam.get_logger().warn(
+                        f"Action Server for {name} already exists. Cannot create more than one server for the same IMA"
+                    )
+                    raise KeyError(
+                        f"Action Server for {name} already exists. Cannot create more than one server for the same IMA"
+                    )
+                server = ActionServer(
+                    node=self.imam,
+                    action_type=properties["action_type"],
+                    action_name=f"IMA/{name}",
+                    goal_callback=lambda goal_request, properties=properties: run(
+                        self.goal_callback(goal_request, properties)
+                    ),
+                    handle_accepted_callback=lambda goal_handle, properties=properties: run(
+                        self.handle_accepted_callback(goal_handle, properties)
+                    ),
+                    execute_callback=lambda goal_handle, properties=properties: run(
+                        self.common_callback(goal_handle, properties)
+                    ),
+                    cancel_callback=self.cancel_callback,
+                    callback_group=ReentrantCallbackGroup(),
+                )
 
-        result = Test.Result()
+                self.imam.log_info(f"Registered Action Server for {name}.")
+                self.action_servers[name] = server
 
-        result.sequence = [1, 2, 3, 5, 8]
+    async def common_callback(self, goal_handle, properties: dict):
+        """
+        Executes IMAs.
+
+        Args:
+            goal_handle (goal_handle): action goal handle
+            properties (dict): properties of IMA
+
+        Returns:
+            result: action result
+        """
+        action = properties["IMA"]()
+        success = action.execute(self.imam, goal_handle)
+        action_type = properties["action_type"]
+        result = action_type.Result()
+
+        if success:
+            goal_handle.succeed()
+            result.result = "Done"
+        else:
+            goal_handle.canceled()
+
+        self.imam.actuator_state.free_actuators(properties["required_actuators"])
 
         return result
 
-    def executeCallback(self, goal_handle):
-        action = MajorAction1()
+    async def handle_accepted_callback(self, goal_handle, properties: dict):
+        """
+        Adds accepted goals to action queue.
 
-        used_actuators = action.getActuators()
+        Args:
+            goal_handle (goal_handle): _action goal handle
+            properties (dict): properties of IMA
+        """
+        name = properties["IMA"]
+        if goal_handle.request.queue_goal:
+            self._goal_queue.append((goal_handle, properties["required_actuators"]))
+        else:
+            self._goal_queue.appendleft((goal_handle, properties["required_actuators"]))
+            
+        self.imam.log_info(f"Added {name} to action queue.")
 
-        action.execute(self.imam)
+    async def goal_callback(self, goal_request, properties: dict):
+        """
+        Rejects goal if it is not queueable and their actuators are not available.
 
-        self.imam.get_logger().info("Executing...")
+        Args:
+            goal_request (goal_request): action goal request
+            properties (dict): properties of IMA
 
-        goal_handle.succeed()
+        Returns:
+            GoalResponse: ACCEPT if goal accepted, REJECT if rejected
+        """
+        name = properties["IMA"]
 
-        result = Test.Result()
+        if goal_request.queue_goal or self.imam.actuator_state.check_availability(
+            properties["required_actuators"]
+        ):
+            return GoalResponse.ACCEPT
+        else:
+            self.imam.log_info(
+                f"Action {name} rejected. Required actuators are not available."
+            )
+            return GoalResponse.REJECT
 
-        result.sequence = [5, 4, 3, 2, 1]
+    def cancel_callback(self, goal_handle):
+        """
+        Cancels action on request.
+        In order to actually cancel actions IMAs need to regularly check whether
+        goal_handle.is_cancel_request == True.
+        In case of it being true, cancel ongoing subactions and return False.
 
-        return result
+        Args:
+            goal_handle (goal_handle): action goal handle
 
-    def postProcessCallback(self, goal_handle):
-        action = MajorAction1()
+        Returns:
+            CancelRepsonse: enum telling whether request was accepted or rejected
+        """
+        self.imam.log_info(f"Cancelling Action.")
+        return CancelResponse.ACCEPT
 
-        used_actuators = action.getActuators()
+    def execute_queued_goal(self):
+        """
+        Checks goal queue for actions that could be executed.
+        If their motors are available, they are executed.
+        """
+        for action in self._goal_queue:
+            gh = action[0]
+            actuators = action[1]
 
-        action.postProcess(self.imam)
-
-        self.imam.get_logger().info("Post-processing...")
-
-        goal_handle.succeed()
-
-        result = Test.Result()
-
-        result.sequence = [1, 2, 3, 4, 5]
-
-        return result
+            if self.imam.actuator_state.check_availability(actuators):
+                self.imam.actuator_state.reserve_actuators(actuators)
+                self._goal_queue.remove(action)
+                gh.execute()

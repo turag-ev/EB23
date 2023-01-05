@@ -3,55 +3,31 @@ from abc import ABC, abstractmethod
 from EB23_Enums import Actuator
 
 
-class MajorAction(ABC):
+class IMA(ABC):
     """
-    Interface for major Internal Mechanics Actions.
-
-    Can be accessed by GamePlanning.
+    Interface for Internal Mechanics Actions.
     """
 
-    used_actuators = []
-
-    def getActuators(self):
+    @abstractmethod
+    def registerIMA() -> dict:
         """
-        Get used actuators.
+        Provides information on IMA name and properties.
 
         Returns:
-            list[Actuator]: used actuators
+            dict: {name: {required_actuators: [Actuator], IMA: class, action_type: class}}
         """
-        return self.used_actuators
+        raise NotImplementedError("RegisterIMA function not implemented.")
 
     @abstractmethod
-    def prepare(self, imam: object, **kw_actuators):
-        pass
-
-    @abstractmethod
-    def execute(self, imam: object, **kw_actuators):
-        pass
-
-    @abstractmethod
-    def postProcess(self, imam: object, **kw_actuators):
-        pass
-
-
-class MinorAction(ABC):
-    """
-    Interface for minor Internal Mechanics Actions.
-
-    Cannot be accessed by GamePlanning.
-    """
-
-    used_actuators = []
-
-    def getActuators(self):
+    def execute(self, imam: object, goal_handle, **kw_actuators) -> bool:
         """
-        Get used actuators.
+        Executes action.
+
+        Args:
+            imam (IMAM): imam
+            goal_handle(): action goal handle
 
         Returns:
-            list[Actuator]: used actuators
+            success(bool): true-successfull, false-error
         """
-        return self.used_actuators
-
-    @abstractmethod
-    def execute(self, imam: object, **kw_actuators):
-        pass
+        raise NotImplementedError("Execute function not implemented.")

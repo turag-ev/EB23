@@ -38,7 +38,7 @@ class PublisherIM:
     def publishMotorState(self):
         msg = String()
         message = f"Motor State {self.motor_state_counter}"
-        msg.data = message
+        msg.data = str(self.imam.actuator_state.getActuatorState())
         self.motor_state_publisher.publish(msg)
         self.motor_state_counter += 1
 
