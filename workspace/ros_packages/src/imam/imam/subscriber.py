@@ -1,7 +1,7 @@
 import rclpy
 from std_msgs.msg import String
 
-
+# used for testing
 class MinimalSubscriber:
     def __init__(self, imam):
         self.imam = imam

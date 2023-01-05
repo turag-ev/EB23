@@ -36,6 +36,10 @@ class IMAM(Node):
 
 
 async def spinning(node: Node, executor):
+    """
+    This function is used to spin the node.
+    ROS event loop is inferior to asyncio event loop.
+    """
     while rclpy.ok():
         rclpy.spin_once(node, timeout_sec=0.01, executor=executor)
         await asyncio.sleep(0.001)
@@ -84,5 +88,9 @@ def test():
 
 
 def console_control():
+    """
+    This function is used to control the robot from the console.
+    Also used to initialize internal mechanics during run time.
+    """
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run_console(loop=loop))
