@@ -1,3 +1,4 @@
+bool queue_goal True
 float64 delta_s 0  # moved path relative to current pos in m
 float64 delta_phi 0 # moved angle relative to current pos in radiants
 ---

@@ -1,4 +1,6 @@
+bool queue_goal True
 Pose pose
 ---
+bool success
 ---
 string status

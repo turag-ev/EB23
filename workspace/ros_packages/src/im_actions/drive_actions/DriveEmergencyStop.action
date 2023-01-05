@@ -1,3 +1,4 @@
+bool queue_goal True
 ---
 bool success
 ---
