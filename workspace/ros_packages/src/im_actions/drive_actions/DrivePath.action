@@ -1,5 +1,5 @@
 bool queue_goal True
-Spline[] path
+Spline[<=25] path
 ---
 bool success
 ---
