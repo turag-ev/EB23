@@ -1,18 +1,18 @@
-from im_actions.action import DriveToPose
+from im_actions.action import DriveToPose as DriveToPoseAction
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
 
 
-class DriveToPoseClass(IMA):
+class DriveToPose(IMA):
     def __init__(self) -> None:
         super().__init__()
 
     def registerIMA() -> dict:
 
         properties = {}
-        properties["IMA"] = DriveToPoseClass
-        properties["action_type"] = DriveToPose
+        properties["IMA"] = DriveToPose
+        properties["action_type"] = DriveToPoseAction
         properties["required_actuators"] = [Actuator.LMC]
 
         register = {}

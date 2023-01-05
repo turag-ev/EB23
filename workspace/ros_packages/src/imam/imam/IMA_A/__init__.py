@@ -2,9 +2,9 @@ from .pickup import PickUp
 from .store import Store
 from .build_cake import BuildCake
 from .drop import Drop
-from .drive_emergency_stop import DriveEmergencyStopClass
-from .drive_force import DriveForceClass
-from .drive_path import DrivePathClass
-from .drive_release import DriveReleaseClass
-from .drive_soft_stop import DriveSoftStopClass
-from .drive_to_pose import DriveToPoseClass
+from .drive_emergency_stop import DriveEmergencyStop
+from .drive_force import DriveForce
+from .drive_path import DrivePath
+from .drive_release import DriveRelease
+from .drive_soft_stop import DriveSoftStop
+from .drive_to_pose import DriveToPose

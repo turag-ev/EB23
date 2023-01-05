@@ -1,18 +1,18 @@
-from im_actions.action import DriveForce
+from im_actions.action import DriveForce as DriveForceAction
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
 
 
-class DriveForceClass(IMA):
+class DriveForce(IMA):
     def __init__(self) -> None:
         super().__init__()
 
     def registerIMA() -> dict:
 
         properties = {}
-        properties["IMA"] = DriveForceClass
-        properties["action_type"] = DriveForce
+        properties["IMA"] = DriveForce
+        properties["action_type"] = DriveForceAction
         properties["required_actuators"] = [Actuator.LMC]
 
         register = {}

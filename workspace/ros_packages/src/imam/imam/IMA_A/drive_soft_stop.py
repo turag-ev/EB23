@@ -1,18 +1,18 @@
-from im_actions.action import DriveSoftStop
+from im_actions.action import DriveSoftStop as DriveSoftStopAction
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
 
 
-class DriveSoftStopClass(IMA):
+class DriveSoftStop(IMA):
     def __init__(self) -> None:
         super().__init__()
 
     def registerIMA() -> dict:
 
         properties = {}
-        properties["IMA"] = DriveSoftStopClass
-        properties["action_type"] = DriveSoftStop
+        properties["IMA"] = DriveSoftStop
+        properties["action_type"] = DriveSoftStopAction
         properties["required_actuators"] = [Actuator.LMC]
 
         register = {}

@@ -13,12 +13,12 @@ from .IMA_A import (
     Store,
     BuildCake,
     Drop,
-    DriveToPoseClass,
-    DriveSoftStopClass,
-    DriveEmergencyStopClass,
-    DriveForceClass,
-    DrivePathClass,
-    DriveReleaseClass,
+    DriveToPose,
+    DriveSoftStop,
+    DriveEmergencyStop,
+    DriveForce,
+    DrivePath,
+    DriveRelease,
 )
 from asyncio import run
 import sys

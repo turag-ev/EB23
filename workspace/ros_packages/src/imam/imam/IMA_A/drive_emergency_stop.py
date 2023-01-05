@@ -1,18 +1,18 @@
-from im_actions.action import DriveEmergencyStop
+from im_actions.action import DriveEmergencyStop as DriveEmergencyStopAction
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
 
 
-class DriveEmergencyStopClass(IMA):
+class DriveEmergencyStop(IMA):
     def __init__(self) -> None:
         super().__init__()
 
     def registerIMA() -> dict:
 
         properties = {}
-        properties["IMA"] = DriveEmergencyStopClass
-        properties["action_type"] = DriveEmergencyStop
+        properties["IMA"] = DriveEmergencyStop
+        properties["action_type"] = DriveEmergencyStopAction
         properties["required_actuators"] = [Actuator.LMC]
 
         register = {}

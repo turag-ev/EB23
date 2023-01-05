@@ -1,18 +1,18 @@
-from im_actions.action import DrivePath
+from im_actions.action import DrivePath as DrivePathAction
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
 from time import sleep
 
 
-class DrivePathClass(IMA):
+class DrivePath(IMA):
     def __init__(self) -> None:
         super().__init__()
 
     def registerIMA() -> dict:
 
         properties = {}
-        properties["IMA"] = DrivePathClass
-        properties["action_type"] = DrivePath
+        properties["IMA"] = DrivePath
+        properties["action_type"] = DrivePathAction
         properties["required_actuators"] = [Actuator.LMC]
 
         register = {}
