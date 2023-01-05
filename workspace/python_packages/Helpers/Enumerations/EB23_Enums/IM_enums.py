@@ -3,6 +3,7 @@ from enum import Enum, auto, unique
 
 @unique
 class Actuator(Enum):
+    LMC = auto()
     ABC = auto()
     MOTOR1 = auto()
     MOTOR2 = auto()
