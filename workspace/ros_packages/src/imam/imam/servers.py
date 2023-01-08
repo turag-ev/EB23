@@ -20,6 +20,7 @@ from .IMA_A import (
     DrivePath,
     DriveRelease,
 )
+from EB23_Enums import Actuator
 from asyncio import run
 import sys
 import inspect
@@ -29,13 +30,14 @@ import threading
 class Servers:
     def __init__(self, imam):
         self.imam = imam
-        self.actions = []  # [PickUp, Store, BuildCake, Drop]
+        self.actions = []
         for _, cls in inspect.getmembers(sys.modules[__name__]):
             if inspect.isclass(cls) and issubclass(cls, IMA_Interface.IMA):
                 self.actions.append(cls)
 
         self._goal_queue = collections.deque()
         self._goal_queue_lock = threading.Lock()
+        self._active_drive_tasks = []
 
         self.action_servers = {}
 
@@ -90,6 +92,7 @@ class Servers:
             result: action result
         """
         action = properties["IMA"]()
+
         success = action.execute(self.imam, goal_handle)
         action_type = properties["action_type"]
         result = action_type.Result()
@@ -117,6 +120,7 @@ class Servers:
             self._goal_queue.append((goal_handle, properties["required_actuators"]))
         elif name in [DriveEmergencyStop, DriveSoftStop]:
             goal_handle.execute()
+            self.emergency_stop_processing()
         else:
             self._goal_queue.appendleft((goal_handle, properties["required_actuators"]))
 
@@ -177,4 +181,20 @@ class Servers:
             if self.imam.actuator_state.check_availability(actuators):
                 self.imam.actuator_state.reserve_actuators(actuators)
                 self._goal_queue.remove(action)
+                if Actuator.LMC in actuators:
+                    self._active_drive_tasks.append(gh)
+
                 gh.execute()
+
+    def emergency_stop_processing(self):
+        with self._goal_queue_lock:
+            for action in self._goal_queue:
+                goal_handle = action[0]
+                actuators = action[1]
+
+                if Actuator.LMC in actuators:
+                    goal_handle.canceled()
+                    self._goal_queue.remove(action)
+
+            for goal_handle in self._active_drive_tasks:
+                goal_handle.is_cancel_requested = True
