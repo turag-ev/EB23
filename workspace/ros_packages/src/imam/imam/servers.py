@@ -97,13 +97,16 @@ class Servers:
         action_type = properties["action_type"]
         result = action_type.Result()
 
+        self.imam.actuator_state.free_actuators(properties["required_actuators"])
+
+        if properties["IMA"] in [DriveEmergencyStop, DriveSoftStop]:
+            self._active_drive_tasks.remove(goal_handle)
+
         if success:
             goal_handle.succeed()
             result.result = "Done"
         else:
             goal_handle.canceled()
-
-        self.imam.actuator_state.free_actuators(properties["required_actuators"])
 
         return result
 
