@@ -1,7 +1,7 @@
 from im_actions.action import DriveForce as DriveForceAction
 from EB23_Enums import Actuator
 from IMA_Interface import IMA
-from turag_lmc import DriveForce as DF
+from turag_lmc import DriveForceTask as DF
 from rclpy.node import Node
 from time import sleep
 
