@@ -18,4 +18,5 @@ class GameActionEnum(Enum):
     STORE = 2
     REVOLVE = 3
     RETRIEVE = 4
+    DROP = 5
 

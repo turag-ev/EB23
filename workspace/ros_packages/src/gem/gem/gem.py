@@ -5,6 +5,9 @@ from rclpy.node import Node
 import queue
 from .GP_Actions.pickup import PickUp
 from .GP_Actions.store import Store
+from .GP_Actions.retrieve import Retrieve
+from .GP_Actions.drop import Drop
+from .GP_Actions.revolve import Revolve
 from GP_Interface.interfaces import GameAction
 
 
@@ -12,8 +15,11 @@ class GEM(Node):
     def __init__(self):
         super().__init__("gem")
         self.prios = {
-            GameActionEnum.PICK_UP: 80,
-            GameActionEnum.STORE: 50,
+            GameActionEnum.PICK_UP: 90,
+            GameActionEnum.STORE: 70,
+            GameActionEnum.RETRIEVE: 50,
+            GameActionEnum.DROP: 30,
+            GameActionEnum.REVOLVE: 10,
         }
 
         self.enum_prios: list = list(self.prios.keys())
@@ -37,7 +43,13 @@ class GEM(Node):
         next_action: GameActionEnum = self.enum_prios[self.next_index]
         if next_action == GameActionEnum.PICK_UP:
             return PickUp("pick_up_" + self.pseudoRand())
-        return Store("store_" + self.pseudoRand())
+        if next_action == GameActionEnum.STORE:
+            return Store("store_" + self.pseudoRand())
+        if next_action == GameActionEnum.RETRIEVE:
+            return Retrieve("retrieve_" + self.pseudoRand())
+        if next_action == GameActionEnum.DROP:
+            return Drop("drop_" + self.pseudoRand())
+        return Revolve("revolve_" + self.pseudoRand())
 
     def pseudoRand(self) -> str:
         return str(randrange(400))
