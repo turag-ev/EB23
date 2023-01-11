@@ -1,3 +1,4 @@
 ./workspace/python_packages/Helpers/Logger
 ./workspace/python_packages/Helpers/Enumerations
 ./workspace/python_packages/InternalMechanics/IMA_Interface
+./workspace/python_packages/GamePlanning/GP_Interface

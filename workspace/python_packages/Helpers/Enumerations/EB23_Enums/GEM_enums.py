@@ -11,3 +11,11 @@ class CakeLayer(Enum):
     YELLOW = auto()
     PINK = auto()
     CHERRIES = auto()
+
+@unique
+class GameActionEnum(Enum):
+    PICK_UP = 1
+    STORE = 2
+    REVOLVE = 3
+    RETRIEVE = 4
+
